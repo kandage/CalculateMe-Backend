@@ -1,0 +1,31 @@
+package com.ains.groupit.calculateme.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class SteelQuantityDetails {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String memberType;
+    private double concreteQuantity;
+    private double steelWeight;
+
+
+    public SteelQuantityDetails(String memberType, double concreteQuantity, double steelWeight) {
+        this.memberType = memberType;
+        this.concreteQuantity = concreteQuantity;
+        this.steelWeight = steelWeight;
+    }
+}
