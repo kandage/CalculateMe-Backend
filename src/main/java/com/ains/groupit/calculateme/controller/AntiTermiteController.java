@@ -3,21 +3,33 @@ package com.ains.groupit.calculateme.controller;
 import com.ains.groupit.calculateme.dto.request.AntiTermiteRequestDTO;
 import com.ains.groupit.calculateme.dto.response.AntiTermiteResponseDTO;
 import com.ains.groupit.calculateme.service.AntiTermiteService;
+import com.ains.groupit.calculateme.util.common.StandardResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/anti-termite-calculator")
+@RequestMapping("/anti-termite-calculator")
+@CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class AntiTermiteController {
 
-    @Autowired
-    private AntiTermiteService antiTermiteService;
+    private final AntiTermiteService antiTermiteService;
 
     @PostMapping("/calculate")
-    public AntiTermiteResponseDTO calculateAntiTermite(@RequestBody AntiTermiteRequestDTO requestDTO) {
-        return antiTermiteService.calculateAndSaveAntiTermite(requestDTO);
+    public ResponseEntity<StandardResponse<AntiTermiteResponseDTO>> calculateAntiTermite(
+            @RequestBody AntiTermiteRequestDTO requestDTO) {
+
+        AntiTermiteResponseDTO responseDTO = antiTermiteService.calculateAndSaveAntiTermite(requestDTO);
+
+        StandardResponse<AntiTermiteResponseDTO> response = new StandardResponse<>(
+                HttpStatus.OK.value(),
+                "Anti-termite calculation successful",
+                responseDTO
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

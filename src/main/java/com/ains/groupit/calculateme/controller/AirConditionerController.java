@@ -2,26 +2,30 @@ package com.ains.groupit.calculateme.controller;
 
 import com.ains.groupit.calculateme.entity.RoomDetails;
 import com.ains.groupit.calculateme.service.AirConditionerService;
+import com.ains.groupit.calculateme.util.common.StandardResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/airconditioner")
+@RequestMapping("/air_conditioner")
+@CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class AirConditionerController {
-    @Autowired
-    private AirConditionerService airConditionerService;
 
-    /**
-     * Endpoint to calculate AC size based on room details.
-     * @param roomDetails - the room details provided in the request body
-     * @return the calculated AC size
-     */
+    private final AirConditionerService airConditionerService;
+
     @PostMapping("/calculate")
-    public String calculateACSize(@RequestBody RoomDetails roomDetails) {
+    public ResponseEntity<StandardResponse<String>> calculateACSize(@RequestBody RoomDetails roomDetails) {
         double acSize = airConditionerService.calculateACSize(roomDetails);
-        return acSize + " Tons";
+        String acSizeMessage = acSize + " Tons";
+        StandardResponse<String> response = new StandardResponse<>(
+                HttpStatus.OK.value(),
+                "AC size calculated successfully",
+                acSizeMessage
+        );
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
