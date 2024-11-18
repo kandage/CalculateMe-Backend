@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/air_conditioner")
+@RequestMapping("/air-conditioner")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class AirConditionerController {
