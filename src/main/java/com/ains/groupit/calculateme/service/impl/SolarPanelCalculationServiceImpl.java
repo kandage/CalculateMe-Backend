@@ -4,14 +4,15 @@ import com.ains.groupit.calculateme.dto.request.SolarPanelCalculationDTO;
 import com.ains.groupit.calculateme.entity.SolarPanelDetail;
 import com.ains.groupit.calculateme.repository.SolarPanelCalculationRepository;
 import com.ains.groupit.calculateme.service.SolarPanelCalculationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class SolarPanelCalculationServiceImpl implements SolarPanelCalculationService {
 
-    @Autowired
-    private SolarPanelCalculationRepository repository;
+    private final SolarPanelCalculationRepository repository;
 
     @Override
     public SolarPanelDetail calculate(SolarPanelCalculationDTO calculationDTO) {

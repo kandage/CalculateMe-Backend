@@ -5,14 +5,15 @@ import com.ains.groupit.calculateme.dto.response.StairCaseResponseDTO;
 import com.ains.groupit.calculateme.entity.StairCaseDetail;
 import com.ains.groupit.calculateme.repository.StairCaseRepository;
 import com.ains.groupit.calculateme.service.StairCaseService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class StairCaseServiceImpl implements StairCaseService {
 
-    @Autowired
-    private StairCaseRepository stairCaseRepository;
+    private final StairCaseRepository stairCaseRepository;
 
     @Override
     public StairCaseResponseDTO calculateStairCase(StairCaseDTO stairCaseDTO) {

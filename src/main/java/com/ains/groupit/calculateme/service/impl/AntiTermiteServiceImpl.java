@@ -5,14 +5,15 @@ import com.ains.groupit.calculateme.dto.response.AntiTermiteResponseDTO;
 import com.ains.groupit.calculateme.entity.AntiTermiteDetail;
 import com.ains.groupit.calculateme.repository.AntiTermiteRepository;
 import com.ains.groupit.calculateme.service.AntiTermiteService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AntiTermiteServiceImpl implements AntiTermiteService {
 
-    @Autowired
-    private AntiTermiteRepository antiTermiteRepository;
+    private final AntiTermiteRepository antiTermiteRepository;
 
     @Override
     public AntiTermiteResponseDTO calculateAndSaveAntiTermite(AntiTermiteRequestDTO requestDTO) {

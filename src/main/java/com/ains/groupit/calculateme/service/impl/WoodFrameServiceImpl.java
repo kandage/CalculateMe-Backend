@@ -5,14 +5,15 @@ import com.ains.groupit.calculateme.dto.response.WoodFrameResponseDTO;
 import com.ains.groupit.calculateme.entity.WoodFrameDetail;
 import com.ains.groupit.calculateme.repository.WoodFrameRepository;
 import com.ains.groupit.calculateme.service.WoodFrameService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class WoodFrameServiceImpl implements WoodFrameService {
 
-    @Autowired
-    private WoodFrameRepository woodFrameRepository;
+    private final WoodFrameRepository woodFrameRepository;
 
     @Override
     public WoodFrameResponseDTO calculateAndSaveWoodFrame(WoodFrameRequestDTO requestDTO) {

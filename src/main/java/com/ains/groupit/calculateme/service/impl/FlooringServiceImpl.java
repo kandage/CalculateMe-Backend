@@ -5,14 +5,15 @@ import com.ains.groupit.calculateme.dto.response.FlooringResponseDTO;
 import com.ains.groupit.calculateme.entity.FlooringDetail;
 import com.ains.groupit.calculateme.repository.FlooringRepository;
 import com.ains.groupit.calculateme.service.FlooringService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class FlooringServiceImpl implements FlooringService {
 
-    @Autowired
-    private FlooringRepository flooringRepository;
+    private final FlooringRepository flooringRepository;
 
     @Override
     public FlooringResponseDTO calculateAndSaveFlooring(FlooringRequestDTO requestDTO) {

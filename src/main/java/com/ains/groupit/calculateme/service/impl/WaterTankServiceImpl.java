@@ -5,14 +5,15 @@ import com.ains.groupit.calculateme.dto.response.WaterTankResponseDTO;
 import com.ains.groupit.calculateme.entity.WaterTankDetail;
 import com.ains.groupit.calculateme.repository.WaterTankRepository;
 import com.ains.groupit.calculateme.service.WaterTankService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class WaterTankServiceImpl implements WaterTankService {
 
-    @Autowired
-    private WaterTankRepository waterTankRepository;
+    private final WaterTankRepository waterTankRepository;
 
     @Override
     public WaterTankResponseDTO calculateWaterTank(WaterTankRequestDTO requestDTO) {

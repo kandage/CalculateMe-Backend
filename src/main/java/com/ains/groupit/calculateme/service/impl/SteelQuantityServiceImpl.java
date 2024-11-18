@@ -5,14 +5,15 @@ import com.ains.groupit.calculateme.dto.response.SteelQuantityResponseDTO;
 import com.ains.groupit.calculateme.entity.SteelQuantityDetails;
 import com.ains.groupit.calculateme.repository.SteelQuantityRepository;
 import com.ains.groupit.calculateme.service.SteelQuantityService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class SteelQuantityServiceImpl implements SteelQuantityService {
 
-    @Autowired
-    private SteelQuantityRepository steelQuantityRepository;
+    private final SteelQuantityRepository steelQuantityRepository;
 
     @Override
     public SteelQuantityResponseDTO calculateAndSaveSteelQuantity(SteelQuantityRequestDTO requestDTO) {
