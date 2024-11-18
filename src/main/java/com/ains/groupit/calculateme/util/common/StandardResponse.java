@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class StandardResponse<T> {
     private int code;
     private String message;
-    private T response;
+    private T data;
 
     public StandardResponse(int code, String message) {
         this.code = code;
