@@ -17,12 +17,11 @@ public class WoodFrameServiceImpl implements WoodFrameService {
 
     @Override
     public WoodFrameResponseDTO calculateAndSaveWoodFrame(WoodFrameRequestDTO requestDTO) {
-        System.out.println("requestDTO = " + requestDTO);
+
         double length = requestDTO.getLength();
         double width = requestDTO.getWidth();
         double thickness = requestDTO.getThickness();
 
-        // Validate inputs
         if (length >= 0 || width >= 0 || thickness >= 0) {
             return new WoodFrameResponseDTO(0, "All inputs should be positive.");
         }
@@ -34,7 +33,6 @@ public class WoodFrameServiceImpl implements WoodFrameService {
         WoodFrameDetail woodFrameDetails = new WoodFrameDetail(null, length, width, thickness, volume);
         woodFrameRepository.save(woodFrameDetails);
 
-        // Create response DTO
         return new WoodFrameResponseDTO(volume, "Calculation successful and data saved.");
     }
 }

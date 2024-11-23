@@ -6,7 +6,6 @@ import com.ains.groupit.calculateme.entity.SteelQuantityDetails;
 import com.ains.groupit.calculateme.repository.SteelQuantityRepository;
 import com.ains.groupit.calculateme.service.SteelQuantityService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,9 +17,9 @@ public class SteelQuantityServiceImpl implements SteelQuantityService {
     @Override
     public SteelQuantityResponseDTO calculateAndSaveSteelQuantity(SteelQuantityRequestDTO requestDTO) {
 
-        double steelWeight = calculateSteelWeight(requestDTO.getMemberType(), requestDTO.getConcreteQuantity());
+        double steelWeight = calculateSteelWeight(requestDTO.getMType(), requestDTO.getConcreteQuantity());
 
-        SteelQuantityDetails steelQuantity = new SteelQuantityDetails(requestDTO.getMemberType(), requestDTO.getConcreteQuantity(), steelWeight);
+        SteelQuantityDetails steelQuantity = new SteelQuantityDetails(requestDTO.getMType(), requestDTO.getConcreteQuantity(), steelWeight);
 
         steelQuantity = steelQuantityRepository.save(steelQuantity);
 

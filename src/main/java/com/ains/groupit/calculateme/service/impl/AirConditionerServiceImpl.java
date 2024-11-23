@@ -1,18 +1,32 @@
 package com.ains.groupit.calculateme.service.impl;
 
-import com.ains.groupit.calculateme.entity.RoomDetails;
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedAirConditionerDTO;
+import com.ains.groupit.calculateme.dto.request.AirConditionerRequestDTO;
+import com.ains.groupit.calculateme.entity.AirConditionerDetail;
+import com.ains.groupit.calculateme.repository.RoomDetailsRepository;
 import com.ains.groupit.calculateme.service.AirConditionerService;
+
+import com.ains.groupit.calculateme.util.mapper.AirConditionerMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 
 @Service
+@RequiredArgsConstructor
 public class AirConditionerServiceImpl implements AirConditionerService {
+    private final RoomDetailsRepository roomDetailsRepository;
+    private final AirConditionerMapper airConditionerMapper;
+
     @Override
-    public double calculateACSize(RoomDetails roomDetails) {
-        double length = roomDetails.getLength();
-        double breadth = roomDetails.getBreadth();
-        double height = roomDetails.getHeight();
-        int personCount = roomDetails.getPersonCount();
-        double maximumTemp = roomDetails.getMaxTemperature();
+    public double calculateACSize(AirConditionerRequestDTO airConditionerDetail) {
+        double length = airConditionerDetail.getLength();
+        double breadth = airConditionerDetail.getBreadth();
+        double height = airConditionerDetail.getHeight();
+        int personCount = airConditionerDetail.getPersonCount();
+        double maximumTemp = airConditionerDetail.getMaxTemperature();
 
         double noOfPerson;
         double temperature;
@@ -42,4 +56,33 @@ public class AirConditionerServiceImpl implements AirConditionerService {
 
         return Math.round((((length * breadth * 20) / 12000) + noOfPerson + temperature + heightEquation) * 100.0) / 100.0;
     }
+
+    @Override
+    public AirConditionerDetail saveRoomDetails(AirConditionerRequestDTO airConditionerRequestDTO) {
+
+        AirConditionerDetail airConditionerDetail = airConditionerMapper.toEntity(airConditionerRequestDTO);
+        double acSize = calculateACSize(airConditionerRequestDTO);
+        airConditionerDetail.setAcSize(acSize);
+
+        return roomDetailsRepository.save(airConditionerDetail);
+    }
+    @Override
+    public PaginatedAirConditionerDTO getAllAirConditioners(String searchText, int pageNo, int size) {
+        Pageable pageable = PageRequest.of(pageNo, size);
+
+        Page<AirConditionerDetail> airConditioners;
+        if (searchText != null && !searchText.isEmpty()) {
+            airConditioners = roomDetailsRepository.searchByFields(searchText, pageable);
+        } else {
+            airConditioners = roomDetailsRepository.findAll(pageable);
+        }
+
+        return new PaginatedAirConditionerDTO(
+                airConditioners.getContent(),
+                airConditioners.getTotalElements(),
+                airConditioners.getTotalPages(),
+                pageNo
+        );
+    }
+
 }

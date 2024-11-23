@@ -1,7 +1,7 @@
 package com.ains.groupit.calculateme.service.impl;
 
-import com.ains.groupit.calculateme.dto.request.BrickCalculationRequest;
-import com.ains.groupit.calculateme.dto.response.BrickCalculationResponse;
+import com.ains.groupit.calculateme.dto.request.BrickCalculationRequestDTO;
+import com.ains.groupit.calculateme.dto.response.BrickCalculationResponseDTO;
 import com.ains.groupit.calculateme.service.BrickCalculatorService;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class BrickCalculatorServiceImpl implements BrickCalculatorService {
 
     @Override
-    public BrickCalculationResponse calculateBricks(BrickCalculationRequest request) {
+    public BrickCalculationResponseDTO calculateBricks(BrickCalculationRequestDTO request) {
         double wallLength = request.getWallLength();
         double wallHeight = request.getWallHeight();
         double wallThickness = request.getWallThickness().equals("10cm wall") ? 0.10 : 0.23;
@@ -70,7 +70,7 @@ public class BrickCalculatorServiceImpl implements BrickCalculatorService {
         tempSandQuantity = sand * 1500;
         sandQuantity = Math.round((tempSandQuantity) / 1000 * 100.0) / 100.0;
 
-        BrickCalculationResponse response = new BrickCalculationResponse();
+        BrickCalculationResponseDTO response = new BrickCalculationResponseDTO();
         response.setNumberOfBricks(noOfBricks);
         response.setCementBags(cementBags);
         response.setSandQuantity(sandQuantity);

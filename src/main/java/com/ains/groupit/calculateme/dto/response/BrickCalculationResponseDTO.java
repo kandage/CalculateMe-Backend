@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BrickCalculationResponse {
+public class BrickCalculationResponseDTO {
     private int numberOfBricks;
     private int cementBags;
     private double sandQuantity;

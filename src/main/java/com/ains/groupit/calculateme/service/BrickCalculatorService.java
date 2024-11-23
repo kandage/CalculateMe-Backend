@@ -1,8 +1,8 @@
 package com.ains.groupit.calculateme.service;
 
-import com.ains.groupit.calculateme.dto.request.BrickCalculationRequest;
-import com.ains.groupit.calculateme.dto.response.BrickCalculationResponse;
+import com.ains.groupit.calculateme.dto.request.BrickCalculationRequestDTO;
+import com.ains.groupit.calculateme.dto.response.BrickCalculationResponseDTO;
 
 public interface BrickCalculatorService {
-    BrickCalculationResponse calculateBricks(BrickCalculationRequest request);
+    BrickCalculationResponseDTO calculateBricks(BrickCalculationRequestDTO request);
 }

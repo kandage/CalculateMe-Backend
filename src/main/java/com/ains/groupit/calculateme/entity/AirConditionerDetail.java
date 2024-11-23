@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class RoomDetails {
+public class AirConditionerDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,4 +22,5 @@ public class RoomDetails {
     private double height;
     private int personCount;
     private double maxTemperature;
+    private double acSize;
 }

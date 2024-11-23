@@ -12,5 +12,5 @@ public class AirConditionerRequestDTO {
     private double breadth;
     private double height;
     private int personCount;
-    private double maxTemp;
+    private double maxTemperature;
 }

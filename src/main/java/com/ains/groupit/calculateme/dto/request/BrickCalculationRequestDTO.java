@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BrickCalculationRequest {
+public class BrickCalculationRequestDTO {
     private double wallLength;
     private double wallHeight;
     private String wallThickness;
