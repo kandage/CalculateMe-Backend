@@ -1,11 +1,15 @@
 package com.ains.groupit.calculateme.service.impl;
 
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedSteelQuantityCalculationDTO;
 import com.ains.groupit.calculateme.dto.request.SteelQuantityCalculationRequestDTO;
 import com.ains.groupit.calculateme.dto.response.SteelQuantityCalculationResponseDTO;
 import com.ains.groupit.calculateme.entity.SteelQuantityDetails;
 import com.ains.groupit.calculateme.repository.SteelQuantityRepository;
 import com.ains.groupit.calculateme.service.SteelQuantityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,6 +28,24 @@ public class SteelQuantityServiceImpl implements SteelQuantityService {
         steelQuantity = steelQuantityRepository.save(steelQuantity);
 
         return new SteelQuantityCalculationResponseDTO(steelQuantity.getMemberType(), steelQuantity.getConcreteQuantity(), steelQuantity.getSteelWeight());
+    }
+
+    @Override
+    public PaginatedSteelQuantityCalculationDTO getAllPaginatedSteelQuantityDetails(String searchText, int pageNo, int size) {
+        Pageable pageable = PageRequest.of(pageNo, size);
+
+        Page<SteelQuantityDetails> steelQuantityDetails = null;
+        if (searchText == null || searchText.isEmpty()) {
+            steelQuantityDetails = steelQuantityRepository.findAll(pageable);
+        }
+
+        assert steelQuantityDetails != null;
+        return new PaginatedSteelQuantityCalculationDTO(
+                steelQuantityDetails.getContent(),
+                steelQuantityDetails.getTotalElements(),
+                steelQuantityDetails.getTotalPages(),
+                pageNo
+        );
     }
 
 
