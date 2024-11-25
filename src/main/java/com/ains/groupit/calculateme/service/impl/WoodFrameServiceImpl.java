@@ -1,11 +1,15 @@
 package com.ains.groupit.calculateme.service.impl;
 
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedWoodFrameCalculationDTO;
 import com.ains.groupit.calculateme.dto.request.WoodFrameCalculationRequestDTO;
 import com.ains.groupit.calculateme.dto.response.WoodFrameCalculationResponseDTO;
 import com.ains.groupit.calculateme.entity.WoodFrameDetail;
 import com.ains.groupit.calculateme.repository.WoodFrameRepository;
 import com.ains.groupit.calculateme.service.WoodFrameService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,5 +37,23 @@ public class WoodFrameServiceImpl implements WoodFrameService {
         woodFrameRepository.save(woodFrameDetails);
 
         return new WoodFrameCalculationResponseDTO(volume, "Calculation successful and data saved.");
+    }
+
+    @Override
+    public PaginatedWoodFrameCalculationDTO getAllPaginatedWoodFrameDetails(String searchText, int pageNo, int size) {
+        Pageable pageable = PageRequest.of(pageNo, size);
+
+        Page<WoodFrameDetail> woodFrameDetails = null;
+        if (searchText == null || searchText.isEmpty()) {
+            woodFrameDetails = woodFrameRepository.findAll(pageable);
+        }
+
+        assert woodFrameDetails != null;
+        return new PaginatedWoodFrameCalculationDTO(
+                woodFrameDetails.getContent(),
+                woodFrameDetails.getTotalElements(),
+                woodFrameDetails.getTotalPages(),
+                pageNo
+        );
     }
 }

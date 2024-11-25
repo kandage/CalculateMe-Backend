@@ -1,5 +1,7 @@
 package com.ains.groupit.calculateme.controller;
 
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedWaterTankCalculationDTO;
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedWoodFrameCalculationDTO;
 import com.ains.groupit.calculateme.dto.request.WoodFrameCalculationRequestDTO;
 import com.ains.groupit.calculateme.dto.response.WoodFrameCalculationResponseDTO;
 import com.ains.groupit.calculateme.service.WoodFrameService;
@@ -31,5 +33,18 @@ public class WoodFrameCalculationController {
             return new ResponseEntity<>(new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<StandardResponse> getAllPaginated(
+            @RequestParam(value = "searchText", required = false) String searchText,
+            @RequestParam int pageNo,
+            @RequestParam int size) {
+        PaginatedWoodFrameCalculationDTO woodFrameDetails = woodFrameService.getAllPaginatedWoodFrameDetails(searchText, pageNo, size);
+
+        return new ResponseEntity<>(
+                new StandardResponse(200, "success", woodFrameDetails),
+                HttpStatus.OK
+        );
     }
 }
