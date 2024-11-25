@@ -1,5 +1,7 @@
 package com.ains.groupit.calculateme.controller;
 
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedSteelQuantityCalculationDTO;
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedWaterTankCalculationDTO;
 import com.ains.groupit.calculateme.dto.request.WaterTankCalculationRequestDTO;
 import com.ains.groupit.calculateme.dto.response.WaterTankCalculationResponseDTO;
 import com.ains.groupit.calculateme.service.WaterTankService;
@@ -31,5 +33,18 @@ public class WaterTankCalculationController {
             return new ResponseEntity<>(new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<StandardResponse> getAllPaginated(
+            @RequestParam(value = "searchText", required = false) String searchText,
+            @RequestParam int pageNo,
+            @RequestParam int size) {
+        PaginatedWaterTankCalculationDTO steelQuantityDetails = waterTankService.getAllPaginatedWaterTankDetails(searchText, pageNo, size);
+
+        return new ResponseEntity<>(
+                new StandardResponse(200, "success", steelQuantityDetails),
+                HttpStatus.OK
+        );
     }
 }

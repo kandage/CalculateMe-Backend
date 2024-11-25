@@ -1,11 +1,17 @@
 package com.ains.groupit.calculateme.service.impl;
 
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedSteelQuantityCalculationDTO;
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedWaterTankCalculationDTO;
 import com.ains.groupit.calculateme.dto.request.WaterTankCalculationRequestDTO;
 import com.ains.groupit.calculateme.dto.response.WaterTankCalculationResponseDTO;
+import com.ains.groupit.calculateme.entity.SteelQuantityDetails;
 import com.ains.groupit.calculateme.entity.WaterTankDetail;
 import com.ains.groupit.calculateme.repository.WaterTankRepository;
 import com.ains.groupit.calculateme.service.WaterTankService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,5 +40,23 @@ public class WaterTankServiceImpl implements WaterTankService {
         waterTankRepository.save(waterTankDetails);
 
         return new WaterTankCalculationResponseDTO(volume, capacity, "Calculation successful and data saved.");
+    }
+
+    @Override
+    public PaginatedWaterTankCalculationDTO getAllPaginatedWaterTankDetails(String searchText, int pageNo, int size) {
+        Pageable pageable = PageRequest.of(pageNo, size);
+
+        Page<WaterTankDetail> waterTankDetails = null;
+        if (searchText == null || searchText.isEmpty()) {
+            waterTankDetails = waterTankRepository.findAll(pageable);
+        }
+
+        assert waterTankDetails != null;
+        return new PaginatedWaterTankCalculationDTO(
+                waterTankDetails.getContent(),
+                waterTankDetails.getTotalElements(),
+                waterTankDetails.getTotalPages(),
+                pageNo
+        );
     }
 }

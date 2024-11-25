@@ -32,6 +32,7 @@ public class FlooringCalculationController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     @GetMapping("/all")
     public ResponseEntity<StandardResponse> getAllPaginated(
             @RequestParam(value = "searchText", required = false) String searchText,
