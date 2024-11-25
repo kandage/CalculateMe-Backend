@@ -1,11 +1,16 @@
 package com.ains.groupit.calculateme.service.impl;
 
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedStairCaseCalculationDTO;
 import com.ains.groupit.calculateme.dto.request.StairCaseCalculationRequestDTO;
 import com.ains.groupit.calculateme.dto.response.StairCaseCalculationResponseDTO;
 import com.ains.groupit.calculateme.entity.StairCaseDetail;
 import com.ains.groupit.calculateme.repository.StairCaseRepository;
 import com.ains.groupit.calculateme.service.StairCaseService;
+import com.ains.groupit.calculateme.util.mapper.StairCaseMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,15 +18,20 @@ import org.springframework.stereotype.Service;
 public class StairCaseServiceImpl implements StairCaseService {
 
     private final StairCaseRepository stairCaseRepository;
+    private final StairCaseMapper stairCaseMapper;
 
     @Override
     public StairCaseCalculationResponseDTO calculateStairCase(StairCaseCalculationRequestDTO stairCaseDTO) {
+        // Map the request DTO to the entity
+        StairCaseDetail stairCaseEntity = stairCaseMapper.toEntity(stairCaseDTO);
+
         double riseR = stairCaseDTO.getRiser();
         double treaD = stairCaseDTO.getTread();
         double stairwidtH = stairCaseDTO.getStairWidth();
         double stairheighT = stairCaseDTO.getStairHeight();
         double slabthicK = stairCaseDTO.getSlabThickness();
 
+        // Perform calculations
         double numberofRiser = stairheighT / riseR;
         double voltotalstep = (0.5 * riseR * treaD * stairwidtH) * numberofRiser;
         double lengthofWaistslab = numberofRiser / treaD;
@@ -73,14 +83,34 @@ public class StairCaseServiceImpl implements StairCaseService {
                 break;
         }
 
-        StairCaseDetail stairCaseEntity = new StairCaseDetail(
-                null,
-                riseR, treaD, stairwidtH, stairheighT, slabthicK, gradeRatio,
-                totalVolumeofstair, cementBags, sandinTon, aggregateinTon
-        );
+        // Set calculated values to the entity
+        stairCaseEntity.setTotalVolumeOfStair(totalVolumeofstair);
+        stairCaseEntity.setCementBags(cementBags);
+        stairCaseEntity.setSandInTons(sandinTon);
+        stairCaseEntity.setAggregateInTons(aggregateinTon);
 
+        // Save the entity to the database
         stairCaseRepository.save(stairCaseEntity);
 
-        return new StairCaseCalculationResponseDTO(totalVolumeofstair, cementBags, sandinTon, aggregateinTon);
+        // Convert the saved entity to the response DTO
+        return stairCaseMapper.toResponseDTO(stairCaseEntity);
+    }
+
+    @Override
+    public PaginatedStairCaseCalculationDTO getAllPaginatedStairCaseDetails(String searchText, int pageNo, int size) {
+        Pageable pageable = PageRequest.of(pageNo, size);
+
+        Page<StairCaseDetail> stairCaseDetails = null;
+        if (searchText == null || searchText.isEmpty()) {
+            stairCaseDetails = stairCaseRepository.findAll(pageable);
+        }
+
+        assert stairCaseDetails != null;
+        return new PaginatedStairCaseCalculationDTO(
+                stairCaseDetails.getContent(),
+                stairCaseDetails.getTotalElements(),
+                stairCaseDetails.getTotalPages(),
+                pageNo
+        );
     }
 }

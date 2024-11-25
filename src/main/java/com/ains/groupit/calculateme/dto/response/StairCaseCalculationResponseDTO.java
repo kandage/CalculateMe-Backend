@@ -8,6 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StairCaseCalculationResponseDTO {
+    private double riser;
+    private double tread;
+    private double stairWidth;
+    private double stairHeight;
+    private double slabThickness;
+    private String grade;
+
     private double totalVolumeOfStair;
     private double cementBags;
     private double sandInTons;
