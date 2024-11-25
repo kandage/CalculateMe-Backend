@@ -22,10 +22,4 @@ public class SteelQuantityDetails {
     private double concreteQuantity;
     private double steelWeight;
 
-
-    public SteelQuantityDetails(String memberType, double concreteQuantity, double steelWeight) {
-        this.memberType = memberType;
-        this.concreteQuantity = concreteQuantity;
-        this.steelWeight = steelWeight;
-    }
 }

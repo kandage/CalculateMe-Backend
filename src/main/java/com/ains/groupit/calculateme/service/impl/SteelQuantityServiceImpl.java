@@ -6,6 +6,7 @@ import com.ains.groupit.calculateme.dto.response.SteelQuantityCalculationRespons
 import com.ains.groupit.calculateme.entity.SteelQuantityDetails;
 import com.ains.groupit.calculateme.repository.SteelQuantityRepository;
 import com.ains.groupit.calculateme.service.SteelQuantityService;
+import com.ains.groupit.calculateme.util.mapper.SteelQuantityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,17 +18,25 @@ import org.springframework.stereotype.Service;
 public class SteelQuantityServiceImpl implements SteelQuantityService {
 
     private final SteelQuantityRepository steelQuantityRepository;
+    private final SteelQuantityMapper steelQuantityMapper;
 
     @Override
     public SteelQuantityCalculationResponseDTO calculateAndSaveSteelQuantity(SteelQuantityCalculationRequestDTO requestDTO) {
+        // Map request DTO to entity
+        SteelQuantityDetails steelQuantityDetails = steelQuantityMapper.toEntity(requestDTO);
 
-        double steelWeight = calculateSteelWeight(requestDTO.getMType(), requestDTO.getConcreteQuantity());
+        // Perform steel weight calculation (example formula)
+        double concreteQuantity = requestDTO.getConcreteQuantity();
+        double steelWeight = calculateSteelWeight(requestDTO.getMemberType(), concreteQuantity);
 
-        SteelQuantityDetails steelQuantity = new SteelQuantityDetails(requestDTO.getMType(), requestDTO.getConcreteQuantity(), steelWeight);
+        // Set calculated values
+        steelQuantityDetails.setSteelWeight(steelWeight);
 
-        steelQuantity = steelQuantityRepository.save(steelQuantity);
+        // Save the entity
+        SteelQuantityDetails savedDetails = steelQuantityRepository.save(steelQuantityDetails);
 
-        return new SteelQuantityCalculationResponseDTO(steelQuantity.getMemberType(), steelQuantity.getConcreteQuantity(), steelQuantity.getSteelWeight());
+        // Convert saved entity to response DTO
+        return steelQuantityMapper.toResponseDTO(savedDetails);
     }
 
     @Override

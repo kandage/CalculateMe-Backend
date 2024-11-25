@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SteelQuantityCalculationRequestDTO {
-    private String mType;
+    private String memberType;
     private double concreteQuantity;
 }
