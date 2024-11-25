@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SolarPanelCalculationDTO {
+public class SolarPanelCalculationRequestDTO {
     private double units;
     private String consumptionType;
 }

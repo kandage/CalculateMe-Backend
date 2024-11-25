@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FlooringRequestDTO {
+public class FlooringCalculationRequestDTO {
     private double floorLength;
     private double floorWidth;
     private double tileLength;

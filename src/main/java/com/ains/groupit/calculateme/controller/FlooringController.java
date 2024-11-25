@@ -1,13 +1,11 @@
 package com.ains.groupit.calculateme.controller;
 
-import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedBrickCalculatorDTO;
 import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedFlooringDTO;
-import com.ains.groupit.calculateme.dto.request.FlooringRequestDTO;
+import com.ains.groupit.calculateme.dto.request.FlooringCalculationRequestDTO;
 import com.ains.groupit.calculateme.dto.response.FlooringResponseDTO;
 import com.ains.groupit.calculateme.service.FlooringService;
 import com.ains.groupit.calculateme.util.common.StandardResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +20,7 @@ public class FlooringController {
 
     @PostMapping("/calculate")
     public ResponseEntity<StandardResponse<FlooringResponseDTO>> calculateFlooring(
-            @RequestBody FlooringRequestDTO requestDTO) {
+            @RequestBody FlooringCalculationRequestDTO requestDTO) {
 
         FlooringResponseDTO responseDTO = flooringService.calculateAndSaveFlooring(requestDTO);
 

@@ -1,7 +1,7 @@
 package com.ains.groupit.calculateme.service.impl;
 
 import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedFlooringDTO;
-import com.ains.groupit.calculateme.dto.request.FlooringRequestDTO;
+import com.ains.groupit.calculateme.dto.request.FlooringCalculationRequestDTO;
 import com.ains.groupit.calculateme.dto.response.FlooringResponseDTO;
 import com.ains.groupit.calculateme.entity.FlooringDetail;
 import com.ains.groupit.calculateme.repository.FlooringRepository;
@@ -21,7 +21,7 @@ public class FlooringServiceImpl implements FlooringService {
     private final FlooringMapper flooringMapper;
 
     @Override
-    public FlooringResponseDTO calculateAndSaveFlooring(FlooringRequestDTO requestDTO) {
+    public FlooringResponseDTO calculateAndSaveFlooring(FlooringCalculationRequestDTO requestDTO) {
         // Convert request DTO to FlooringDetail entity
         FlooringDetail flooringDetail = flooringMapper.toEntity(requestDTO);
 
