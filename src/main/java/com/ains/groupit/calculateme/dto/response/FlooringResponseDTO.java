@@ -8,8 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FlooringResponseDTO {
+    private double floorLength;
+    private double floorWidth;
+    private double tileLength;
+    private double tileWidth;
     private int numberOfTiles;
     private int cementBags;
     private double sandQuantity;
-    private String message;
 }
