@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AntiTermiteResponseDTO {
+    private double length;
+    private double width;
     private double quantity;
-    private String message;
 }

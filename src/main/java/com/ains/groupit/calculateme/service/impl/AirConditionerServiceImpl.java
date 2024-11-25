@@ -70,13 +70,12 @@ public class AirConditionerServiceImpl implements AirConditionerService {
     public PaginatedAirConditionerDTO getAllAirConditioners(String searchText, int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
 
-        Page<AirConditionerDetail> airConditioners;
-        if (searchText != null && !searchText.isEmpty()) {
-            airConditioners = roomDetailsRepository.searchByFields(searchText, pageable);
-        } else {
+        Page<AirConditionerDetail> airConditioners = null;
+        if (searchText == null || searchText.isEmpty()) {
             airConditioners = roomDetailsRepository.findAll(pageable);
         }
 
+        assert airConditioners != null;
         return new PaginatedAirConditionerDTO(
                 airConditioners.getContent(),
                 airConditioners.getTotalElements(),

@@ -2,79 +2,77 @@ package com.ains.groupit.calculateme.service.impl;
 
 import com.ains.groupit.calculateme.dto.request.BrickCalculationRequestDTO;
 import com.ains.groupit.calculateme.dto.response.BrickCalculationResponseDTO;
+import com.ains.groupit.calculateme.entity.BrickCalculationDetail;
+import com.ains.groupit.calculateme.repository.BrickCalculationRepository;
 import com.ains.groupit.calculateme.service.BrickCalculatorService;
+import com.ains.groupit.calculateme.util.enums.CementRatio;
+import com.ains.groupit.calculateme.util.mapper.BrickCalculationMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class BrickCalculatorServiceImpl implements BrickCalculatorService {
+
+    private final BrickCalculationRepository brickCalculationRepository;
+    private final BrickCalculationMapper brickCalculationMapper;
 
     @Override
     public BrickCalculationResponseDTO calculateBricks(BrickCalculationRequestDTO request) {
-        double wallLength = request.getWallLength();
-        double wallHeight = request.getWallHeight();
-        double wallThickness = request.getWallThickness().equals("10cm wall") ? 0.10 : 0.23;
+        // Map the request DTO to an entity
+        BrickCalculationDetail entity = brickCalculationMapper.toEntity(request);
 
-        double brickLength = request.getBrickLength();
-        double brickWidth = request.getBrickWidth();
-        double brickHeight = request.getBrickHeight();
+        // Extracting wall dimensions and brick dimensions
+        double wallLength = entity.getWallLength();
+        double wallHeight = entity.getWallHeight();
+        double wallThickness = entity.getWallThickness();
 
-        double brickMasonry = wallLength * wallHeight * wallThickness;
-        double brickVolume = (brickLength + 0.01) * (brickWidth + 0.01) * (brickHeight + 0.01);
-
-        int noOfBricks = (int) Math.ceil(brickMasonry / brickVolume);
-
-        double bricksMortar = noOfBricks * (brickLength * brickWidth * brickHeight);
-        double tempMortar = brickMasonry - bricksMortar;
-        double tempMortar2 = tempMortar + (tempMortar * 0.15);
-        double mortarQuantity = tempMortar2 + (tempMortar2 * 0.25);
-
-        double cement, sand, tempSandQuantity, sandQuantity;
-        String ratio = request.getCementRatio();
-
-        switch (ratio) {
-            case "C.M 1:3":
-                cement = mortarQuantity / 4.0;
-                sand = mortarQuantity * (3 / 4.0);
-                break;
-            case "C.M 1:4":
-                cement = mortarQuantity / 5.0;
-                sand = mortarQuantity * (4 / 5.0);
-                break;
-            case "C.M 1:5":
-                cement = mortarQuantity / 6.0;
-                sand = mortarQuantity * (5 / 6.0);
-                break;
-            case "C.M 1:6":
-                cement = mortarQuantity / 7.0;
-                sand = mortarQuantity * (6 / 7.0);
-                break;
-            case "C.M 1:7":
-                cement = mortarQuantity / 8.0;
-                sand = mortarQuantity * (7 / 8.0);
-                break;
-            case "C.M 1:8":
-                cement = mortarQuantity / 9.0;
-                sand = mortarQuantity * (8 / 9.0);
-                break;
-            case "C.M 1:9":
-                cement = mortarQuantity / 10.0;
-                sand = mortarQuantity * (9 / 10.0);
-                break;
-            default:
-                cement = mortarQuantity;
-                sand = mortarQuantity;
-                break;
+        // Convert wall thickness from centimeters to meters if necessary
+        if (wallThickness == 10) {
+            wallThickness = 0.1; // 10 cm = 0.1 m
+        } else if (wallThickness == 20) {
+            wallThickness = 0.2; // 20 cm = 0.2 m
+        }else {
+            wallThickness = 0.3;
         }
 
-        int cementBags = (int) Math.ceil(cement / 0.035);
-        tempSandQuantity = sand * 1500;
-        sandQuantity = Math.round((tempSandQuantity) / 1000 * 100.0) / 100.0;
+        double brickLength = entity.getBrickLength();
+        double brickWidth = entity.getBrickWidth();
+        double brickHeight = entity.getBrickHeight();
 
-        BrickCalculationResponseDTO response = new BrickCalculationResponseDTO();
-        response.setNumberOfBricks(noOfBricks);
-        response.setCementBags(cementBags);
-        response.setSandQuantity(sandQuantity);
+        // 1. Calculate the wall volume
+        double wallVolume = wallLength * wallHeight * wallThickness;
 
-        return response;
+        // 2. Calculate the brick volume (including joint thickness of 0.01m)
+        double brickVolume = (brickLength + 0.01) * (brickWidth + 0.01) * (brickHeight + 0.01);
+
+        // 3. Calculate the number of bricks
+        int numberOfBricks = (int) Math.ceil(wallVolume / brickVolume);
+
+        // 4. Calculate mortar volume
+        double bricksMortar = numberOfBricks * (brickLength * brickWidth * brickHeight); // Solid brick volume
+        double netMortarVolume = wallVolume - bricksMortar; // Net mortar volume between bricks
+        double adjustedMortarVolume = netMortarVolume + (netMortarVolume * 0.15); // Add 15% for wastage
+        double mortarVolumeDry = adjustedMortarVolume + (adjustedMortarVolume * 0.25); // Add 25% for dry volume
+
+        // 5. Calculate cement and sand quantities based on the selected ratio
+        CementRatio ratioEnum = CementRatio.fromString(request.getCementRatio());
+        double cementVolume = mortarVolumeDry / ratioEnum.getCementDivisor();
+        double sandVolume = mortarVolumeDry * (ratioEnum.getSandDivisor() / ratioEnum.getCementDivisor());
+
+        // 6. Calculate cement bags and sand weight
+        int cementBags = (int) Math.ceil(cementVolume / 0.035); // 1 cement bag = 0.035 m³
+        double sandQuantity = Math.round((sandVolume * 1500) / 1000 * 100.0) / 100.0; // Convert to tons (1500 kg/m³)
+
+        // Populate the calculated values back into the entity
+        entity.setNumberOfBricks(numberOfBricks);
+        entity.setCementBags(cementBags);
+        entity.setSandQuantity(sandQuantity);
+
+        // Save the entity to the database
+        brickCalculationRepository.save(entity);
+
+        // Convert the entity back to a response DTO using the mapper
+        return brickCalculationMapper.toResponseDTO(entity);
     }
 }

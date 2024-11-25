@@ -1,12 +1,16 @@
 package com.ains.groupit.calculateme.service.impl;
 
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedAntiTermiteDTO;
 import com.ains.groupit.calculateme.dto.request.AntiTermiteRequestDTO;
 import com.ains.groupit.calculateme.dto.response.AntiTermiteResponseDTO;
 import com.ains.groupit.calculateme.entity.AntiTermiteDetail;
 import com.ains.groupit.calculateme.repository.AntiTermiteRepository;
 import com.ains.groupit.calculateme.service.AntiTermiteService;
+import com.ains.groupit.calculateme.util.mapper.AntiTermiteMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,26 +18,45 @@ import org.springframework.stereotype.Service;
 public class AntiTermiteServiceImpl implements AntiTermiteService {
 
     private final AntiTermiteRepository antiTermiteRepository;
+    private final AntiTermiteMapper antiTermiteMapper;
 
     @Override
     public AntiTermiteResponseDTO calculateAndSaveAntiTermite(AntiTermiteRequestDTO requestDTO) {
-        double length = requestDTO.getLength();
-        double width = requestDTO.getWidth();
-
         // Validate inputs
-        if (length <= 0 || width <= 0) {
-            return new AntiTermiteResponseDTO(0, "All inputs should be positive.");
+        if (requestDTO.getLength() <= 0 || requestDTO.getWidth() <= 0) {
+            throw new IllegalArgumentException("Length and width must be greater than zero.");
         }
 
-        // Calculate the quantity
-        double area = length * width;
+        // Calculate area and quantity
+        double area = requestDTO.getLength() * requestDTO.getWidth();
         double quantity = area * 30;
 
-        // Create and save entity to the database
-        AntiTermiteDetail details = new AntiTermiteDetail(null, length, width, quantity);
-        antiTermiteRepository.save(details);
+        // Convert request DTO to entity using mapper
+        AntiTermiteDetail details = antiTermiteMapper.toEntity(requestDTO);
+        details.setQuantity(quantity);
 
-        // Create response DTO
-        return new AntiTermiteResponseDTO(quantity, "Calculation successful and data saved.");
+        // Save the entity to the database
+        AntiTermiteDetail savedDetail = antiTermiteRepository.save(details);
+
+        // Use mapper to convert saved entity to response DTO
+        return antiTermiteMapper.toResponseDTO(savedDetail);
+    }
+
+    @Override
+    public PaginatedAntiTermiteDTO getAllAntiTermites(String searchText, int pageNo, int size) {
+        Pageable pageable = PageRequest.of(pageNo, size);
+
+        Page<AntiTermiteDetail> antiTermiteDetails = null;
+        if (searchText == null || searchText.isEmpty()) {
+            antiTermiteDetails = antiTermiteRepository.findAll(pageable);
+        }
+
+        assert antiTermiteDetails != null;
+        return new PaginatedAntiTermiteDTO(
+                antiTermiteDetails.getContent(),
+                antiTermiteDetails.getTotalElements(),
+                antiTermiteDetails.getTotalPages(),
+                pageNo
+        );
     }
 }

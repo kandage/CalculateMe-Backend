@@ -25,5 +25,28 @@ public class UserController {
                     e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PostMapping("/forgot-password")
+    public ResponseEntity<StandardResponse<Object>> forgotPassword(@RequestParam String mobileNumber) {
+        try {
+            StandardResponse<Object> updateDetails = userService.forgotPassword(mobileNumber);
+            return new ResponseEntity<>(updateDetails, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PutMapping("/update-by-mobile")
+    public ResponseEntity<StandardResponse<Object>> updateUserDetailsByMobile(
+            @RequestParam String mobileNumber,
+            @RequestBody UserRequestDTO userRequestDTO
+    ) {
 
+        try {
+            StandardResponse<Object> updateDetails = userService.updateUserDetailsByMobile(mobileNumber, userRequestDTO);
+            return new ResponseEntity<>(updateDetails, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
