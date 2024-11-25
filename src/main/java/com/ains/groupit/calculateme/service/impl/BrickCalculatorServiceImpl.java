@@ -1,13 +1,19 @@
 package com.ains.groupit.calculateme.service.impl;
 
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedAntiTermiteDTO;
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedBrickCalculatorDTO;
 import com.ains.groupit.calculateme.dto.request.BrickCalculationRequestDTO;
 import com.ains.groupit.calculateme.dto.response.BrickCalculationResponseDTO;
+import com.ains.groupit.calculateme.entity.AntiTermiteDetail;
 import com.ains.groupit.calculateme.entity.BrickCalculationDetail;
 import com.ains.groupit.calculateme.repository.BrickCalculationRepository;
 import com.ains.groupit.calculateme.service.BrickCalculatorService;
 import com.ains.groupit.calculateme.util.enums.CementRatio;
 import com.ains.groupit.calculateme.util.mapper.BrickCalculationMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -74,5 +80,23 @@ public class BrickCalculatorServiceImpl implements BrickCalculatorService {
 
         // Convert the entity back to a response DTO using the mapper
         return brickCalculationMapper.toResponseDTO(entity);
+    }
+
+    @Override
+    public PaginatedBrickCalculatorDTO getAllPaginatedBrickCalculator(String searchText, int pageNo, int size) {
+        Pageable pageable = PageRequest.of(pageNo, size);
+
+        Page<BrickCalculationDetail> brickCalculationDetails = null;
+        if (searchText == null || searchText.isEmpty()) {
+            brickCalculationDetails = brickCalculationRepository.findAll(pageable);
+        }
+
+        assert brickCalculationDetails != null;
+        return new PaginatedBrickCalculatorDTO(
+                brickCalculationDetails.getContent(),
+                brickCalculationDetails.getTotalElements(),
+                brickCalculationDetails.getTotalPages(),
+                pageNo
+        );
     }
 }
