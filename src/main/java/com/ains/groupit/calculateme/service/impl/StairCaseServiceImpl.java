@@ -97,15 +97,13 @@ public class StairCaseServiceImpl implements StairCaseService {
     }
 
     @Override
-    public PaginatedStairCaseCalculationDTO getAllPaginatedStairCaseDetails(String searchText, int pageNo, int size) {
+    public PaginatedStairCaseCalculationDTO getAllPaginatedStairCaseDetails(int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
 
-        Page<StairCaseDetail> stairCaseDetails = null;
-        if (searchText == null || searchText.isEmpty()) {
-            stairCaseDetails = stairCaseRepository.findAll(pageable);
-        }
+        Page<StairCaseDetail> stairCaseDetails;
 
-        assert stairCaseDetails != null;
+        stairCaseDetails = stairCaseRepository.findAll(pageable);
+
         return new PaginatedStairCaseCalculationDTO(
                 stairCaseDetails.getContent(),
                 stairCaseDetails.getTotalElements(),

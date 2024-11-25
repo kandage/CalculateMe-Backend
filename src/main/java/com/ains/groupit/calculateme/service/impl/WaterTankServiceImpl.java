@@ -48,15 +48,13 @@ public class WaterTankServiceImpl implements WaterTankService {
     }
 
     @Override
-    public PaginatedWaterTankCalculationDTO getAllPaginatedWaterTankDetails(String searchText, int pageNo, int size) {
+    public PaginatedWaterTankCalculationDTO getAllPaginatedWaterTankDetails(int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
 
-        Page<WaterTankDetail> waterTankDetails = null;
-        if (searchText == null || searchText.isEmpty()) {
-            waterTankDetails = waterTankRepository.findAll(pageable);
-        }
+        Page<WaterTankDetail> waterTankDetails;
 
-        assert waterTankDetails != null;
+        waterTankDetails = waterTankRepository.findAll(pageable);
+
         return new PaginatedWaterTankCalculationDTO(
                 waterTankDetails.getContent(),
                 waterTankDetails.getTotalElements(),

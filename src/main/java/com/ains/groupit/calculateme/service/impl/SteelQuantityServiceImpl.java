@@ -41,15 +41,13 @@ public class SteelQuantityServiceImpl implements SteelQuantityService {
     }
 
     @Override
-    public PaginatedSteelQuantityCalculationDTO getAllPaginatedSteelQuantityDetails(String searchText, int pageNo, int size) {
+    public PaginatedSteelQuantityCalculationDTO getAllPaginatedSteelQuantityDetails(int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
 
-        Page<SteelQuantityDetails> steelQuantityDetails = null;
-        if (searchText == null || searchText.isEmpty()) {
-            steelQuantityDetails = steelQuantityRepository.findAll(pageable);
-        }
+        Page<SteelQuantityDetails> steelQuantityDetails;
 
-        assert steelQuantityDetails != null;
+        steelQuantityDetails = steelQuantityRepository.findAll(pageable);
+
         return new PaginatedSteelQuantityCalculationDTO(
                 steelQuantityDetails.getContent(),
                 steelQuantityDetails.getTotalElements(),

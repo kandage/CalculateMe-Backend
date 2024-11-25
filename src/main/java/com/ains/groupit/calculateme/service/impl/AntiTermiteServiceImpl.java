@@ -43,15 +43,13 @@ public class AntiTermiteServiceImpl implements AntiTermiteService {
     }
 
     @Override
-    public PaginatedAntiTermiteCalculationDTO getAllAntiTermites(String searchText, int pageNo, int size) {
+    public PaginatedAntiTermiteCalculationDTO getAllAntiTermites(int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
 
-        Page<AntiTermiteDetail> antiTermiteDetails = null;
-        if (searchText == null || searchText.isEmpty()) {
-            antiTermiteDetails = antiTermiteRepository.findAll(pageable);
-        }
+        Page<AntiTermiteDetail> antiTermiteDetails;
 
-        assert antiTermiteDetails != null;
+        antiTermiteDetails = antiTermiteRepository.findAll(pageable);
+
         return new PaginatedAntiTermiteCalculationDTO(
                 antiTermiteDetails.getContent(),
                 antiTermiteDetails.getTotalElements(),

@@ -35,10 +35,9 @@ public class StairCaseCalculationController {
 
     @GetMapping("/all")
     public ResponseEntity<StandardResponse> getAllPaginated(
-            @RequestParam(value = "searchText", required = false) String searchText,
             @RequestParam int pageNo,
             @RequestParam int size) {
-        PaginatedStairCaseCalculationDTO stairCaseCalculationDTO = stairCaseService.getAllPaginatedStairCaseDetails(searchText, pageNo, size);
+        PaginatedStairCaseCalculationDTO stairCaseCalculationDTO = stairCaseService.getAllPaginatedStairCaseDetails(pageNo, size);
 
         return new ResponseEntity<>(
                 new StandardResponse(200, "success", stairCaseCalculationDTO),

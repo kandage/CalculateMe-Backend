@@ -35,10 +35,9 @@ public class AntiTermiteCalculationController {
 
     @GetMapping("/all")
     public ResponseEntity<StandardResponse> getAllPaginated(
-            @RequestParam(value = "searchText", required = false) String searchText,
             @RequestParam int pageNo,
             @RequestParam int size) {
-        PaginatedAntiTermiteCalculationDTO antiTermiteDTO = antiTermiteService.getAllAntiTermites(searchText, pageNo, size);
+        PaginatedAntiTermiteCalculationDTO antiTermiteDTO = antiTermiteService.getAllAntiTermites(pageNo, size);
 
         return new ResponseEntity<>(
                 new StandardResponse(200, "success", antiTermiteDTO),

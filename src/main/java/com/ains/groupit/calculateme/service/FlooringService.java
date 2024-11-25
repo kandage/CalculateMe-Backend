@@ -7,5 +7,5 @@ import com.ains.groupit.calculateme.dto.response.FlooringCalculationResponseDTO;
 public interface FlooringService {
     FlooringCalculationResponseDTO calculateAndSaveFlooring(FlooringCalculationRequestDTO requestDTO);
 
-    PaginatedFlooringCalculationDTO getAllPaginatedFlooringDetails(String searchText, int pageNo, int size);
+    PaginatedFlooringCalculationDTO getAllPaginatedFlooringDetails(int pageNo, int size);
 }

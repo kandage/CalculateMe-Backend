@@ -7,5 +7,5 @@ import com.ains.groupit.calculateme.dto.response.SolarPanelCalculationResponseDT
 public interface SolarPanelService {
     SolarPanelCalculationResponseDTO calculate(SolarPanelCalculationRequestDTO calculationDTO);
 
-    PaginatedSolarPanelCalculationDTO getAllPaginatedSolarPanelDetails(String searchText, int pageNo, int size);
+    PaginatedSolarPanelCalculationDTO getAllPaginatedSolarPanelDetails(int pageNo, int size);
 }

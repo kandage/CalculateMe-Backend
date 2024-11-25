@@ -35,10 +35,9 @@ public class SteelQuantityCalculationController {
 
     @GetMapping("/all")
     public ResponseEntity<StandardResponse> getAllPaginated(
-            @RequestParam(value = "searchText", required = false) String searchText,
             @RequestParam int pageNo,
             @RequestParam int size) {
-        PaginatedSteelQuantityCalculationDTO steelQuantityDetails = steelQuantityService.getAllPaginatedSteelQuantityDetails(searchText, pageNo, size);
+        PaginatedSteelQuantityCalculationDTO steelQuantityDetails = steelQuantityService.getAllPaginatedSteelQuantityDetails(pageNo, size);
 
         return new ResponseEntity<>(
                 new StandardResponse(200, "success", steelQuantityDetails),

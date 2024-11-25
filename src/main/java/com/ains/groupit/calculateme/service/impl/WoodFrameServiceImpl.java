@@ -6,12 +6,16 @@ import com.ains.groupit.calculateme.dto.response.WoodFrameCalculationResponseDTO
 import com.ains.groupit.calculateme.entity.WoodFrameDetail;
 import com.ains.groupit.calculateme.repository.WoodFrameRepository;
 import com.ains.groupit.calculateme.service.WoodFrameService;
+import com.ains.groupit.calculateme.util.common.CsvConverter;
 import com.ains.groupit.calculateme.util.mapper.WoodFrameMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.io.ByteArrayInputStream;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -47,20 +51,26 @@ public class WoodFrameServiceImpl implements WoodFrameService {
     }
 
     @Override
-    public PaginatedWoodFrameCalculationDTO getAllPaginatedWoodFrameDetails(String searchText, int pageNo, int size) {
+    public PaginatedWoodFrameCalculationDTO getAllPaginatedWoodFrameDetails(int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
 
-        Page<WoodFrameDetail> woodFrameDetails = null;
-        if (searchText == null || searchText.isEmpty()) {
-            woodFrameDetails = woodFrameRepository.findAll(pageable);
-        }
+        Page<WoodFrameDetail> woodFrameDetails;
 
-        assert woodFrameDetails != null;
+        woodFrameDetails = woodFrameRepository.findAll(pageable);
+
         return new PaginatedWoodFrameCalculationDTO(
                 woodFrameDetails.getContent(),
                 woodFrameDetails.getTotalElements(),
                 woodFrameDetails.getTotalPages(),
                 pageNo
         );
+    }
+
+    @Override
+    public ByteArrayInputStream downloadCsv() {
+        List<WoodFrameDetail> woodFrameDetails = woodFrameRepository.findAll();
+
+        // Use the common utility to generate CSV
+        return CsvConverter.generateCsv(woodFrameDetails, WoodFrameDetail.class);
     }
 }

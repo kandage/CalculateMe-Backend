@@ -35,10 +35,9 @@ public class SolarPanelCalculationController {
 
     @GetMapping("/all")
     public ResponseEntity<StandardResponse> getAllPaginated(
-            @RequestParam(value = "searchText", required = false) String searchText,
             @RequestParam int pageNo,
             @RequestParam int size) {
-        PaginatedSolarPanelCalculationDTO solarPanelDTO = solarPanelService.getAllPaginatedSolarPanelDetails(searchText, pageNo, size);
+        PaginatedSolarPanelCalculationDTO solarPanelDTO = solarPanelService.getAllPaginatedSolarPanelDetails(pageNo, size);
 
         return new ResponseEntity<>(
                 new StandardResponse(200, "success", solarPanelDTO),

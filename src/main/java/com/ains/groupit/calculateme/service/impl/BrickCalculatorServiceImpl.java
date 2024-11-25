@@ -81,15 +81,13 @@ public class BrickCalculatorServiceImpl implements BrickCalculatorService {
     }
 
     @Override
-    public PaginatedBrickCalculationDTO getAllPaginatedBrickCalculator(String searchText, int pageNo, int size) {
+    public PaginatedBrickCalculationDTO getAllPaginatedBrickCalculator(int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
 
-        Page<BrickCalculationDetail> brickCalculationDetails = null;
-        if (searchText == null || searchText.isEmpty()) {
-            brickCalculationDetails = brickRepository.findAll(pageable);
-        }
+        Page<BrickCalculationDetail> brickCalculationDetails;
 
-        assert brickCalculationDetails != null;
+        brickCalculationDetails = brickRepository.findAll(pageable);
+
         return new PaginatedBrickCalculationDTO(
                 brickCalculationDetails.getContent(),
                 brickCalculationDetails.getTotalElements(),

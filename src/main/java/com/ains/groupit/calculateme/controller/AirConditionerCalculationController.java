@@ -31,10 +31,9 @@ public class AirConditionerCalculationController {
 
     @GetMapping("/all")
     public ResponseEntity<StandardResponse> getAllPaginated(
-            @RequestParam(value = "searchText", required = false) String searchText,
             @RequestParam int pageNo,
             @RequestParam int size) {
-        PaginatedAirConditionerCalculationDTO airConditionerDTO = airConditionerService.getAllAirConditioners(searchText, pageNo, size);
+        PaginatedAirConditionerCalculationDTO airConditionerDTO = airConditionerService.getAllAirConditioners(pageNo, size);
 
         return new ResponseEntity<>(
                 new StandardResponse(200, "success", airConditionerDTO),

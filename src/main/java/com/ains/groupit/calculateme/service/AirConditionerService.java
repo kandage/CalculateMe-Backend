@@ -9,6 +9,6 @@ public interface AirConditionerService {
 
     AirConditionerDetail saveRoomDetails(AirConditionerCalculationRequestDTO airConditionerCalculationRequestDTO);
 
-    PaginatedAirConditionerCalculationDTO getAllAirConditioners(String searchText, int pageNo, int size);
+    PaginatedAirConditionerCalculationDTO getAllAirConditioners(int pageNo, int size);
 
 }

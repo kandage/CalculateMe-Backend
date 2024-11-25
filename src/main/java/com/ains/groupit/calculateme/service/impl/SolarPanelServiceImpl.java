@@ -52,15 +52,13 @@ public class SolarPanelServiceImpl implements SolarPanelService {
     }
 
     @Override
-    public PaginatedSolarPanelCalculationDTO getAllPaginatedSolarPanelDetails(String searchText, int pageNo, int size) {
+    public PaginatedSolarPanelCalculationDTO getAllPaginatedSolarPanelDetails(int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
 
-        Page<SolarPanelDetail> solarPanelDetails = null;
-        if (searchText == null || searchText.isEmpty()) {
-            solarPanelDetails = solarPanelRepository.findAll(pageable);
-        }
+        Page<SolarPanelDetail> solarPanelDetails;
 
-        assert solarPanelDetails != null;
+        solarPanelDetails = solarPanelRepository.findAll(pageable);
+
         return new PaginatedSolarPanelCalculationDTO(
                 solarPanelDetails.getContent(),
                 solarPanelDetails.getTotalElements(),

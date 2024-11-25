@@ -67,15 +67,13 @@ public class AirConditionerServiceImpl implements AirConditionerService {
         return roomDetailsRepository.save(airConditionerDetail);
     }
     @Override
-    public PaginatedAirConditionerCalculationDTO getAllAirConditioners(String searchText, int pageNo, int size) {
+    public PaginatedAirConditionerCalculationDTO getAllAirConditioners(int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
 
-        Page<AirConditionerDetail> airConditioners = null;
-        if (searchText == null || searchText.isEmpty()) {
-            airConditioners = roomDetailsRepository.findAll(pageable);
-        }
+        Page<AirConditionerDetail> airConditioners;
 
-        assert airConditioners != null;
+        airConditioners = roomDetailsRepository.findAll(pageable);
+
         return new PaginatedAirConditionerCalculationDTO(
                 airConditioners.getContent(),
                 airConditioners.getTotalElements(),

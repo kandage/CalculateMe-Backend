@@ -7,5 +7,5 @@ import com.ains.groupit.calculateme.dto.response.BrickCalculationResponseDTO;
 public interface BrickCalculatorService {
     BrickCalculationResponseDTO calculateBricks(BrickCalculationCalculationRequestDTO request);
 
-    PaginatedBrickCalculationDTO getAllPaginatedBrickCalculator(String searchText, int pageNo, int size);
+    PaginatedBrickCalculationDTO getAllPaginatedBrickCalculator(int pageNo, int size);
 }

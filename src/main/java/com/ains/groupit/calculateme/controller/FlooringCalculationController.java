@@ -35,10 +35,9 @@ public class FlooringCalculationController {
 
     @GetMapping("/all")
     public ResponseEntity<StandardResponse> getAllPaginated(
-            @RequestParam(value = "searchText", required = false) String searchText,
             @RequestParam int pageNo,
             @RequestParam int size) {
-        PaginatedFlooringCalculationDTO flooringDetails = flooringService.getAllPaginatedFlooringDetails(searchText, pageNo, size);
+        PaginatedFlooringCalculationDTO flooringDetails = flooringService.getAllPaginatedFlooringDetails(pageNo, size);
 
         return new ResponseEntity<>(
                 new StandardResponse(200, "success", flooringDetails),

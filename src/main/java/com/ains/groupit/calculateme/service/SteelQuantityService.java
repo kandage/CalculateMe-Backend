@@ -7,5 +7,5 @@ import com.ains.groupit.calculateme.dto.response.SteelQuantityCalculationRespons
 public interface SteelQuantityService {
     SteelQuantityCalculationResponseDTO calculateAndSaveSteelQuantity(SteelQuantityCalculationRequestDTO requestDTO);
 
-    PaginatedSteelQuantityCalculationDTO getAllPaginatedSteelQuantityDetails(String searchText, int pageNo, int size);
+    PaginatedSteelQuantityCalculationDTO getAllPaginatedSteelQuantityDetails(int pageNo, int size);
 }

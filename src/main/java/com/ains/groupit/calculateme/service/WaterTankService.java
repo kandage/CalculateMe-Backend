@@ -7,5 +7,5 @@ import com.ains.groupit.calculateme.dto.response.WaterTankCalculationResponseDTO
 public interface WaterTankService {
     WaterTankCalculationResponseDTO calculateWaterTank(WaterTankCalculationRequestDTO requestDTO);
 
-    PaginatedWaterTankCalculationDTO getAllPaginatedWaterTankDetails(String searchText, int pageNo, int size);
+    PaginatedWaterTankCalculationDTO getAllPaginatedWaterTankDetails(int pageNo, int size);
 }

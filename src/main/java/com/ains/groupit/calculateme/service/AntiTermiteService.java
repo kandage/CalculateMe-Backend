@@ -7,5 +7,5 @@ import com.ains.groupit.calculateme.dto.response.AntiTermiteCalculationResponseD
 public interface AntiTermiteService {
     AntiTermiteCalculationResponseDTO calculateAndSaveAntiTermite(AntiTermiteCalculationRequestDTO requestDTO);
 
-    PaginatedAntiTermiteCalculationDTO getAllAntiTermites(String searchText, int pageNo, int size);
+    PaginatedAntiTermiteCalculationDTO getAllAntiTermites(int pageNo, int size);
 }

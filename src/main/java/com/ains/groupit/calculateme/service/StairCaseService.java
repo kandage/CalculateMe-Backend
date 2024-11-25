@@ -7,5 +7,5 @@ import com.ains.groupit.calculateme.dto.response.StairCaseCalculationResponseDTO
 public interface StairCaseService {
     StairCaseCalculationResponseDTO calculateStairCase(StairCaseCalculationRequestDTO stairCaseDTO);
 
-    PaginatedStairCaseCalculationDTO getAllPaginatedStairCaseDetails(String searchText, int pageNo, int size);
+    PaginatedStairCaseCalculationDTO getAllPaginatedStairCaseDetails(int pageNo, int size);
 }

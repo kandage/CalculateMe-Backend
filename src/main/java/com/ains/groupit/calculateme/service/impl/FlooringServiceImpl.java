@@ -64,15 +64,13 @@ public class FlooringServiceImpl implements FlooringService {
     }
 
     @Override
-    public PaginatedFlooringCalculationDTO getAllPaginatedFlooringDetails(String searchText, int pageNo, int size) {
+    public PaginatedFlooringCalculationDTO getAllPaginatedFlooringDetails(int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
 
-        Page<FlooringDetail> flooringDetails = null;
-        if (searchText == null || searchText.isEmpty()) {
-            flooringDetails = flooringRepository.findAll(pageable);
-        }
+        Page<FlooringDetail> flooringDetails;
 
-        assert flooringDetails != null;
+        flooringDetails = flooringRepository.findAll(pageable);
+
         return new PaginatedFlooringCalculationDTO(
                 flooringDetails.getContent(),
                 flooringDetails.getTotalElements(),

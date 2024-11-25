@@ -35,10 +35,9 @@ public class BrickCalculationController {
 
     @GetMapping("/all")
     public ResponseEntity<StandardResponse> getAllPaginated(
-            @RequestParam(value = "searchText", required = false) String searchText,
             @RequestParam int pageNo,
             @RequestParam int size) {
-        PaginatedBrickCalculationDTO brickCalculatorDTO = brickCalculatorService.getAllPaginatedBrickCalculator(searchText, pageNo, size);
+        PaginatedBrickCalculationDTO brickCalculatorDTO = brickCalculatorService.getAllPaginatedBrickCalculator(pageNo, size);
 
         return new ResponseEntity<>(
                 new StandardResponse(200, "success", brickCalculatorDTO),
