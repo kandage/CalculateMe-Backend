@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WaterTankCalculationResponseDTO {
+    private double length;
+    private double width;
+    private double depth;
+
     private double volume;
     private double capacity;
-    private String message;
 }
