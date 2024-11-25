@@ -6,6 +6,7 @@ import com.ains.groupit.calculateme.dto.response.WoodFrameCalculationResponseDTO
 import com.ains.groupit.calculateme.entity.WoodFrameDetail;
 import com.ains.groupit.calculateme.repository.WoodFrameRepository;
 import com.ains.groupit.calculateme.service.WoodFrameService;
+import com.ains.groupit.calculateme.util.mapper.WoodFrameMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,25 +19,31 @@ public class WoodFrameServiceImpl implements WoodFrameService {
 
     private final WoodFrameRepository woodFrameRepository;
 
+    private final WoodFrameMapper woodFrameMapper;
+
     @Override
     public WoodFrameCalculationResponseDTO calculateAndSaveWoodFrame(WoodFrameCalculationRequestDTO requestDTO) {
-
         double length = requestDTO.getLength();
         double width = requestDTO.getWidth();
         double thickness = requestDTO.getThickness();
 
-        if (length >= 0 || width >= 0 || thickness >= 0) {
-            return new WoodFrameCalculationResponseDTO(0, "All inputs should be positive.");
+        // Validate inputs
+        if (length <= 0 || width <= 0 || thickness <= 0) {
+            return new WoodFrameCalculationResponseDTO(0, 0, 0, 0);
         }
 
-        // Calculate volume (m³)
+        // Calculate volume (m³) and round to 2 decimal places
         double volume = Math.round((length * width * thickness) * 100.0) / 100.0;
 
-        // Create and save entity to the database
-        WoodFrameDetail woodFrameDetails = new WoodFrameDetail(null, length, width, thickness, volume);
-        woodFrameRepository.save(woodFrameDetails);
+        // Map input DTO to entity and set calculated volume
+        WoodFrameDetail woodFrameDetails = woodFrameMapper.toEntity(requestDTO);
+        woodFrameDetails.setVolume(volume);
 
-        return new WoodFrameCalculationResponseDTO(volume, "Calculation successful and data saved.");
+        // Save the entity to the database
+        WoodFrameDetail savedDetails = woodFrameRepository.save(woodFrameDetails);
+
+        // Map saved entity to response DTO
+        return woodFrameMapper.toResponseDTO(savedDetails);
     }
 
     @Override

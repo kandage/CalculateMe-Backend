@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WoodFrameCalculationResponseDTO {
+    private double length;
+    private double width;
+    private double thickness;
     private double volume;
-    private String message;
 }
