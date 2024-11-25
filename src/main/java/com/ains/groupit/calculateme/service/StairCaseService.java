@@ -1,8 +1,8 @@
 package com.ains.groupit.calculateme.service;
 
-import com.ains.groupit.calculateme.dto.request.StairCaseDTO;
-import com.ains.groupit.calculateme.dto.response.StairCaseResponseDTO;
+import com.ains.groupit.calculateme.dto.request.StairCaseCalculationRequestDTO;
+import com.ains.groupit.calculateme.dto.response.StairCaseCalculationResponseDTO;
 
 public interface StairCaseService {
-    StairCaseResponseDTO calculateStairCase(StairCaseDTO stairCaseDTO);
+    StairCaseCalculationResponseDTO calculateStairCase(StairCaseCalculationRequestDTO stairCaseDTO);
 }

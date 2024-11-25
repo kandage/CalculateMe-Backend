@@ -1,14 +1,14 @@
 package com.ains.groupit.calculateme.service;
 
-import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedAirConditionerDTO;
-import com.ains.groupit.calculateme.dto.request.AirConditionerRequestDTO;
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedAirConditionerCalculationDTO;
+import com.ains.groupit.calculateme.dto.request.AirConditionerCalculationRequestDTO;
 import com.ains.groupit.calculateme.entity.AirConditionerDetail;
 
 public interface AirConditionerService {
-    double calculateACSize(AirConditionerRequestDTO airConditionerDetail);
+    double calculateACSize(AirConditionerCalculationRequestDTO airConditionerDetail);
 
-    AirConditionerDetail saveRoomDetails(AirConditionerRequestDTO airConditionerRequestDTO);
+    AirConditionerDetail saveRoomDetails(AirConditionerCalculationRequestDTO airConditionerCalculationRequestDTO);
 
-    PaginatedAirConditionerDTO getAllAirConditioners(String searchText, int pageNo, int size);
+    PaginatedAirConditionerCalculationDTO getAllAirConditioners(String searchText, int pageNo, int size);
 
 }

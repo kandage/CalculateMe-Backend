@@ -1,11 +1,11 @@
 package com.ains.groupit.calculateme.service;
 
-import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedBrickCalculatorDTO;
-import com.ains.groupit.calculateme.dto.request.BrickCalculationRequestDTO;
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedBrickCalculationDTO;
+import com.ains.groupit.calculateme.dto.request.BrickCalculationCalculationRequestDTO;
 import com.ains.groupit.calculateme.dto.response.BrickCalculationResponseDTO;
 
 public interface BrickCalculatorService {
-    BrickCalculationResponseDTO calculateBricks(BrickCalculationRequestDTO request);
+    BrickCalculationResponseDTO calculateBricks(BrickCalculationCalculationRequestDTO request);
 
-    PaginatedBrickCalculatorDTO getAllPaginatedBrickCalculator(String searchText, int pageNo, int size);
+    PaginatedBrickCalculationDTO getAllPaginatedBrickCalculator(String searchText, int pageNo, int size);
 }

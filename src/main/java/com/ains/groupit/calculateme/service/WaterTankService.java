@@ -1,8 +1,8 @@
 package com.ains.groupit.calculateme.service;
 
-import com.ains.groupit.calculateme.dto.request.WaterTankRequestDTO;
-import com.ains.groupit.calculateme.dto.response.WaterTankResponseDTO;
+import com.ains.groupit.calculateme.dto.request.WaterTankCalculationRequestDTO;
+import com.ains.groupit.calculateme.dto.response.WaterTankCalculationResponseDTO;
 
 public interface WaterTankService {
-    WaterTankResponseDTO calculateWaterTank(WaterTankRequestDTO requestDTO);
+    WaterTankCalculationResponseDTO calculateWaterTank(WaterTankCalculationRequestDTO requestDTO);
 }

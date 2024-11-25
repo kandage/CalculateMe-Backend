@@ -1,8 +1,8 @@
 package com.ains.groupit.calculateme.service;
 
-import com.ains.groupit.calculateme.dto.request.WoodFrameRequestDTO;
-import com.ains.groupit.calculateme.dto.response.WoodFrameResponseDTO;
+import com.ains.groupit.calculateme.dto.request.WoodFrameCalculationRequestDTO;
+import com.ains.groupit.calculateme.dto.response.WoodFrameCalculationResponseDTO;
 
 public interface WoodFrameService {
-    WoodFrameResponseDTO calculateAndSaveWoodFrame(WoodFrameRequestDTO requestDTO);
+    WoodFrameCalculationResponseDTO calculateAndSaveWoodFrame(WoodFrameCalculationRequestDTO requestDTO);
 }

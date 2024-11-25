@@ -1,8 +1,8 @@
 package com.ains.groupit.calculateme.service.impl;
 
-import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedFlooringDTO;
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedFlooringCalculationDTO;
 import com.ains.groupit.calculateme.dto.request.FlooringCalculationRequestDTO;
-import com.ains.groupit.calculateme.dto.response.FlooringResponseDTO;
+import com.ains.groupit.calculateme.dto.response.FlooringCalculationResponseDTO;
 import com.ains.groupit.calculateme.entity.FlooringDetail;
 import com.ains.groupit.calculateme.repository.FlooringRepository;
 import com.ains.groupit.calculateme.service.FlooringService;
@@ -21,7 +21,7 @@ public class FlooringServiceImpl implements FlooringService {
     private final FlooringMapper flooringMapper;
 
     @Override
-    public FlooringResponseDTO calculateAndSaveFlooring(FlooringCalculationRequestDTO requestDTO) {
+    public FlooringCalculationResponseDTO calculateAndSaveFlooring(FlooringCalculationRequestDTO requestDTO) {
         // Convert request DTO to FlooringDetail entity
         FlooringDetail flooringDetail = flooringMapper.toEntity(requestDTO);
 
@@ -32,7 +32,7 @@ public class FlooringServiceImpl implements FlooringService {
 
         // Validate inputs
         if (floorLength <= 0 || floorWidth <= 0 || tileLength <= 0 || tileWidth <= 0) {
-            return new FlooringResponseDTO(0, 0, 0, 0, 0, 0, 0);
+            return new FlooringCalculationResponseDTO(0, 0, 0, 0, 0, 0, 0);
         }
 
         // Calculate the tile area and floor area
@@ -64,7 +64,7 @@ public class FlooringServiceImpl implements FlooringService {
     }
 
     @Override
-    public PaginatedFlooringDTO getAllPaginatedFlooringDetails(String searchText, int pageNo, int size) {
+    public PaginatedFlooringCalculationDTO getAllPaginatedFlooringDetails(String searchText, int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
 
         Page<FlooringDetail> flooringDetails = null;
@@ -73,7 +73,7 @@ public class FlooringServiceImpl implements FlooringService {
         }
 
         assert flooringDetails != null;
-        return new PaginatedFlooringDTO(
+        return new PaginatedFlooringCalculationDTO(
                 flooringDetails.getContent(),
                 flooringDetails.getTotalElements(),
                 flooringDetails.getTotalPages(),

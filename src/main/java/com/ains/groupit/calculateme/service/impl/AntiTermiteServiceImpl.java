@@ -1,8 +1,8 @@
 package com.ains.groupit.calculateme.service.impl;
 
-import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedAntiTermiteDTO;
-import com.ains.groupit.calculateme.dto.request.AntiTermiteRequestDTO;
-import com.ains.groupit.calculateme.dto.response.AntiTermiteResponseDTO;
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedAntiTermiteCalculationDTO;
+import com.ains.groupit.calculateme.dto.request.AntiTermiteCalculationRequestDTO;
+import com.ains.groupit.calculateme.dto.response.AntiTermiteCalculationResponseDTO;
 import com.ains.groupit.calculateme.entity.AntiTermiteDetail;
 import com.ains.groupit.calculateme.repository.AntiTermiteRepository;
 import com.ains.groupit.calculateme.service.AntiTermiteService;
@@ -21,7 +21,7 @@ public class AntiTermiteServiceImpl implements AntiTermiteService {
     private final AntiTermiteMapper antiTermiteMapper;
 
     @Override
-    public AntiTermiteResponseDTO calculateAndSaveAntiTermite(AntiTermiteRequestDTO requestDTO) {
+    public AntiTermiteCalculationResponseDTO calculateAndSaveAntiTermite(AntiTermiteCalculationRequestDTO requestDTO) {
         // Validate inputs
         if (requestDTO.getLength() <= 0 || requestDTO.getWidth() <= 0) {
             throw new IllegalArgumentException("Length and width must be greater than zero.");
@@ -43,7 +43,7 @@ public class AntiTermiteServiceImpl implements AntiTermiteService {
     }
 
     @Override
-    public PaginatedAntiTermiteDTO getAllAntiTermites(String searchText, int pageNo, int size) {
+    public PaginatedAntiTermiteCalculationDTO getAllAntiTermites(String searchText, int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
 
         Page<AntiTermiteDetail> antiTermiteDetails = null;
@@ -52,7 +52,7 @@ public class AntiTermiteServiceImpl implements AntiTermiteService {
         }
 
         assert antiTermiteDetails != null;
-        return new PaginatedAntiTermiteDTO(
+        return new PaginatedAntiTermiteCalculationDTO(
                 antiTermiteDetails.getContent(),
                 antiTermiteDetails.getTotalElements(),
                 antiTermiteDetails.getTotalPages(),

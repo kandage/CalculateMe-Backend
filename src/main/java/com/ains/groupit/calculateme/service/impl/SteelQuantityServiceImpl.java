@@ -1,7 +1,7 @@
 package com.ains.groupit.calculateme.service.impl;
 
-import com.ains.groupit.calculateme.dto.request.SteelQuantityRequestDTO;
-import com.ains.groupit.calculateme.dto.response.SteelQuantityResponseDTO;
+import com.ains.groupit.calculateme.dto.request.SteelQuantityCalculationRequestDTO;
+import com.ains.groupit.calculateme.dto.response.SteelQuantityCalculationResponseDTO;
 import com.ains.groupit.calculateme.entity.SteelQuantityDetails;
 import com.ains.groupit.calculateme.repository.SteelQuantityRepository;
 import com.ains.groupit.calculateme.service.SteelQuantityService;
@@ -15,7 +15,7 @@ public class SteelQuantityServiceImpl implements SteelQuantityService {
     private final SteelQuantityRepository steelQuantityRepository;
 
     @Override
-    public SteelQuantityResponseDTO calculateAndSaveSteelQuantity(SteelQuantityRequestDTO requestDTO) {
+    public SteelQuantityCalculationResponseDTO calculateAndSaveSteelQuantity(SteelQuantityCalculationRequestDTO requestDTO) {
 
         double steelWeight = calculateSteelWeight(requestDTO.getMType(), requestDTO.getConcreteQuantity());
 
@@ -23,7 +23,7 @@ public class SteelQuantityServiceImpl implements SteelQuantityService {
 
         steelQuantity = steelQuantityRepository.save(steelQuantity);
 
-        return new SteelQuantityResponseDTO(steelQuantity.getMemberType(), steelQuantity.getConcreteQuantity(), steelQuantity.getSteelWeight());
+        return new SteelQuantityCalculationResponseDTO(steelQuantity.getMemberType(), steelQuantity.getConcreteQuantity(), steelQuantity.getSteelWeight());
     }
 
 

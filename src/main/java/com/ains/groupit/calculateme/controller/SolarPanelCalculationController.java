@@ -1,10 +1,9 @@
 package com.ains.groupit.calculateme.controller;
 
-import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedSolarPanelDTO;
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedSolarPanelCalculationDTO;
 import com.ains.groupit.calculateme.dto.request.SolarPanelCalculationRequestDTO;
-import com.ains.groupit.calculateme.dto.response.SolarPanelResponseDTO;
-import com.ains.groupit.calculateme.entity.SolarPanelDetail;
-import com.ains.groupit.calculateme.service.SolarPanelCalculationService;
+import com.ains.groupit.calculateme.dto.response.SolarPanelCalculationResponseDTO;
+import com.ains.groupit.calculateme.service.SolarPanelService;
 import com.ains.groupit.calculateme.util.common.StandardResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,15 +16,15 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class SolarPanelCalculationController {
 
-    private final SolarPanelCalculationService solarPanelCalculationService;
+    private final SolarPanelService solarPanelService;
 
     @PostMapping("/calculate")
-    public ResponseEntity<StandardResponse<SolarPanelResponseDTO>> calculateSolarPanels(
+    public ResponseEntity<StandardResponse<SolarPanelCalculationResponseDTO>> calculateSolarPanels(
             @RequestBody SolarPanelCalculationRequestDTO calculationDTO) {
 
-        SolarPanelResponseDTO solarPanelDetail = solarPanelCalculationService.calculate(calculationDTO);
+        SolarPanelCalculationResponseDTO solarPanelDetail = solarPanelService.calculate(calculationDTO);
 
-        StandardResponse<SolarPanelResponseDTO> response = new StandardResponse<>(
+        StandardResponse<SolarPanelCalculationResponseDTO> response = new StandardResponse<>(
                 HttpStatus.OK.value(),
                 "Solar panel calculation successful",
                 solarPanelDetail
@@ -39,7 +38,7 @@ public class SolarPanelCalculationController {
             @RequestParam(value = "searchText", required = false) String searchText,
             @RequestParam int pageNo,
             @RequestParam int size) {
-        PaginatedSolarPanelDTO solarPanelDTO = solarPanelCalculationService.getAllPaginatedSolarPanelDetails(searchText, pageNo, size);
+        PaginatedSolarPanelCalculationDTO solarPanelDTO = solarPanelService.getAllPaginatedSolarPanelDetails(searchText, pageNo, size);
 
         return new ResponseEntity<>(
                 new StandardResponse(200, "success", solarPanelDTO),

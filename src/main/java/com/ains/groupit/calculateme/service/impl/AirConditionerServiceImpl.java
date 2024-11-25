@@ -1,7 +1,7 @@
 package com.ains.groupit.calculateme.service.impl;
 
-import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedAirConditionerDTO;
-import com.ains.groupit.calculateme.dto.request.AirConditionerRequestDTO;
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedAirConditionerCalculationDTO;
+import com.ains.groupit.calculateme.dto.request.AirConditionerCalculationRequestDTO;
 import com.ains.groupit.calculateme.entity.AirConditionerDetail;
 import com.ains.groupit.calculateme.repository.RoomDetailsRepository;
 import com.ains.groupit.calculateme.service.AirConditionerService;
@@ -21,7 +21,7 @@ public class AirConditionerServiceImpl implements AirConditionerService {
     private final AirConditionerMapper airConditionerMapper;
 
     @Override
-    public double calculateACSize(AirConditionerRequestDTO airConditionerDetail) {
+    public double calculateACSize(AirConditionerCalculationRequestDTO airConditionerDetail) {
         double length = airConditionerDetail.getLength();
         double breadth = airConditionerDetail.getBreadth();
         double height = airConditionerDetail.getHeight();
@@ -58,16 +58,16 @@ public class AirConditionerServiceImpl implements AirConditionerService {
     }
 
     @Override
-    public AirConditionerDetail saveRoomDetails(AirConditionerRequestDTO airConditionerRequestDTO) {
+    public AirConditionerDetail saveRoomDetails(AirConditionerCalculationRequestDTO airConditionerCalculationRequestDTO) {
 
-        AirConditionerDetail airConditionerDetail = airConditionerMapper.toEntity(airConditionerRequestDTO);
-        double acSize = calculateACSize(airConditionerRequestDTO);
+        AirConditionerDetail airConditionerDetail = airConditionerMapper.toEntity(airConditionerCalculationRequestDTO);
+        double acSize = calculateACSize(airConditionerCalculationRequestDTO);
         airConditionerDetail.setAcSize(acSize);
 
         return roomDetailsRepository.save(airConditionerDetail);
     }
     @Override
-    public PaginatedAirConditionerDTO getAllAirConditioners(String searchText, int pageNo, int size) {
+    public PaginatedAirConditionerCalculationDTO getAllAirConditioners(String searchText, int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
 
         Page<AirConditionerDetail> airConditioners = null;
@@ -76,7 +76,7 @@ public class AirConditionerServiceImpl implements AirConditionerService {
         }
 
         assert airConditioners != null;
-        return new PaginatedAirConditionerDTO(
+        return new PaginatedAirConditionerCalculationDTO(
                 airConditioners.getContent(),
                 airConditioners.getTotalElements(),
                 airConditioners.getTotalPages(),

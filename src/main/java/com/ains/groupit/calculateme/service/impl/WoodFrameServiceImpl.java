@@ -1,12 +1,11 @@
 package com.ains.groupit.calculateme.service.impl;
 
-import com.ains.groupit.calculateme.dto.request.WoodFrameRequestDTO;
-import com.ains.groupit.calculateme.dto.response.WoodFrameResponseDTO;
+import com.ains.groupit.calculateme.dto.request.WoodFrameCalculationRequestDTO;
+import com.ains.groupit.calculateme.dto.response.WoodFrameCalculationResponseDTO;
 import com.ains.groupit.calculateme.entity.WoodFrameDetail;
 import com.ains.groupit.calculateme.repository.WoodFrameRepository;
 import com.ains.groupit.calculateme.service.WoodFrameService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,14 +15,14 @@ public class WoodFrameServiceImpl implements WoodFrameService {
     private final WoodFrameRepository woodFrameRepository;
 
     @Override
-    public WoodFrameResponseDTO calculateAndSaveWoodFrame(WoodFrameRequestDTO requestDTO) {
+    public WoodFrameCalculationResponseDTO calculateAndSaveWoodFrame(WoodFrameCalculationRequestDTO requestDTO) {
 
         double length = requestDTO.getLength();
         double width = requestDTO.getWidth();
         double thickness = requestDTO.getThickness();
 
         if (length >= 0 || width >= 0 || thickness >= 0) {
-            return new WoodFrameResponseDTO(0, "All inputs should be positive.");
+            return new WoodFrameCalculationResponseDTO(0, "All inputs should be positive.");
         }
 
         // Calculate volume (m³)
@@ -33,6 +32,6 @@ public class WoodFrameServiceImpl implements WoodFrameService {
         WoodFrameDetail woodFrameDetails = new WoodFrameDetail(null, length, width, thickness, volume);
         woodFrameRepository.save(woodFrameDetails);
 
-        return new WoodFrameResponseDTO(volume, "Calculation successful and data saved.");
+        return new WoodFrameCalculationResponseDTO(volume, "Calculation successful and data saved.");
     }
 }

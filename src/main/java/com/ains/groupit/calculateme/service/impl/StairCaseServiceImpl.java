@@ -1,12 +1,11 @@
 package com.ains.groupit.calculateme.service.impl;
 
-import com.ains.groupit.calculateme.dto.request.StairCaseDTO;
-import com.ains.groupit.calculateme.dto.response.StairCaseResponseDTO;
+import com.ains.groupit.calculateme.dto.request.StairCaseCalculationRequestDTO;
+import com.ains.groupit.calculateme.dto.response.StairCaseCalculationResponseDTO;
 import com.ains.groupit.calculateme.entity.StairCaseDetail;
 import com.ains.groupit.calculateme.repository.StairCaseRepository;
 import com.ains.groupit.calculateme.service.StairCaseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +15,7 @@ public class StairCaseServiceImpl implements StairCaseService {
     private final StairCaseRepository stairCaseRepository;
 
     @Override
-    public StairCaseResponseDTO calculateStairCase(StairCaseDTO stairCaseDTO) {
+    public StairCaseCalculationResponseDTO calculateStairCase(StairCaseCalculationRequestDTO stairCaseDTO) {
         double riseR = stairCaseDTO.getRiser();
         double treaD = stairCaseDTO.getTread();
         double stairwidtH = stairCaseDTO.getStairWidth();
@@ -82,6 +81,6 @@ public class StairCaseServiceImpl implements StairCaseService {
 
         stairCaseRepository.save(stairCaseEntity);
 
-        return new StairCaseResponseDTO(totalVolumeofstair, cementBags, sandinTon, aggregateinTon);
+        return new StairCaseCalculationResponseDTO(totalVolumeofstair, cementBags, sandinTon, aggregateinTon);
     }
 }

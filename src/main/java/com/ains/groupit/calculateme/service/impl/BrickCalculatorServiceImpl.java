@@ -1,15 +1,13 @@
 package com.ains.groupit.calculateme.service.impl;
 
-import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedAntiTermiteDTO;
-import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedBrickCalculatorDTO;
-import com.ains.groupit.calculateme.dto.request.BrickCalculationRequestDTO;
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedBrickCalculationDTO;
+import com.ains.groupit.calculateme.dto.request.BrickCalculationCalculationRequestDTO;
 import com.ains.groupit.calculateme.dto.response.BrickCalculationResponseDTO;
-import com.ains.groupit.calculateme.entity.AntiTermiteDetail;
 import com.ains.groupit.calculateme.entity.BrickCalculationDetail;
-import com.ains.groupit.calculateme.repository.BrickCalculationRepository;
+import com.ains.groupit.calculateme.repository.BrickRepository;
 import com.ains.groupit.calculateme.service.BrickCalculatorService;
 import com.ains.groupit.calculateme.util.enums.CementRatio;
-import com.ains.groupit.calculateme.util.mapper.BrickCalculationMapper;
+import com.ains.groupit.calculateme.util.mapper.BrickMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,13 +18,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BrickCalculatorServiceImpl implements BrickCalculatorService {
 
-    private final BrickCalculationRepository brickCalculationRepository;
-    private final BrickCalculationMapper brickCalculationMapper;
+    private final BrickRepository brickRepository;
+    private final BrickMapper brickMapper;
 
     @Override
-    public BrickCalculationResponseDTO calculateBricks(BrickCalculationRequestDTO request) {
+    public BrickCalculationResponseDTO calculateBricks(BrickCalculationCalculationRequestDTO request) {
         // Map the request DTO to an entity
-        BrickCalculationDetail entity = brickCalculationMapper.toEntity(request);
+        BrickCalculationDetail entity = brickMapper.toEntity(request);
 
         // Extracting wall dimensions and brick dimensions
         double wallLength = entity.getWallLength();
@@ -76,23 +74,23 @@ public class BrickCalculatorServiceImpl implements BrickCalculatorService {
         entity.setSandQuantity(sandQuantity);
 
         // Save the entity to the database
-        brickCalculationRepository.save(entity);
+        brickRepository.save(entity);
 
         // Convert the entity back to a response DTO using the mapper
-        return brickCalculationMapper.toResponseDTO(entity);
+        return brickMapper.toResponseDTO(entity);
     }
 
     @Override
-    public PaginatedBrickCalculatorDTO getAllPaginatedBrickCalculator(String searchText, int pageNo, int size) {
+    public PaginatedBrickCalculationDTO getAllPaginatedBrickCalculator(String searchText, int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
 
         Page<BrickCalculationDetail> brickCalculationDetails = null;
         if (searchText == null || searchText.isEmpty()) {
-            brickCalculationDetails = brickCalculationRepository.findAll(pageable);
+            brickCalculationDetails = brickRepository.findAll(pageable);
         }
 
         assert brickCalculationDetails != null;
-        return new PaginatedBrickCalculatorDTO(
+        return new PaginatedBrickCalculationDTO(
                 brickCalculationDetails.getContent(),
                 brickCalculationDetails.getTotalElements(),
                 brickCalculationDetails.getTotalPages(),

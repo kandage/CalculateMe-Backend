@@ -1,11 +1,11 @@
 package com.ains.groupit.calculateme.service;
 
-import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedAntiTermiteDTO;
-import com.ains.groupit.calculateme.dto.request.AntiTermiteRequestDTO;
-import com.ains.groupit.calculateme.dto.response.AntiTermiteResponseDTO;
+import com.ains.groupit.calculateme.dto.paginatedDTO.PaginatedAntiTermiteCalculationDTO;
+import com.ains.groupit.calculateme.dto.request.AntiTermiteCalculationRequestDTO;
+import com.ains.groupit.calculateme.dto.response.AntiTermiteCalculationResponseDTO;
 
 public interface AntiTermiteService {
-    AntiTermiteResponseDTO calculateAndSaveAntiTermite(AntiTermiteRequestDTO requestDTO);
+    AntiTermiteCalculationResponseDTO calculateAndSaveAntiTermite(AntiTermiteCalculationRequestDTO requestDTO);
 
-    PaginatedAntiTermiteDTO getAllAntiTermites(String searchText, int pageNo, int size);
+    PaginatedAntiTermiteCalculationDTO getAllAntiTermites(String searchText, int pageNo, int size);
 }
