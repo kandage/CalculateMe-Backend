@@ -23,13 +23,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public StandardResponse<Object> saveUser(UserRequestDTO userRequestDTO) {
         try {
-            // Map DTO to Entity
             Users user = userMapper.toEntity(userRequestDTO);
 
-            // Set username as email
-            user.setUserFullName(user.getUserEmail());
+            user.setUserFullName(user.getUserFullName());
 
-            // Save user in the repository
             Users savedUser = usersRepository.save(user);
 
             // Compose email body
@@ -166,6 +163,8 @@ public class UserServiceImpl implements UserService {
             Users user = usersRepository.findByPasswordAndUserEmail(password, email)
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
+            System.out.println("Fetched User: " + user);
+
             UserResponseDTO userResponseDTO = userMapper.toResponseDTO(user);
 
             return new StandardResponse<>(
@@ -173,6 +172,7 @@ public class UserServiceImpl implements UserService {
                     "User details fetched successfully!",
                     userResponseDTO
             );
+
         } catch (IllegalArgumentException e) {
             return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage());
         } catch (Exception e) {
@@ -182,4 +182,5 @@ public class UserServiceImpl implements UserService {
             );
         }
     }
+
 }
