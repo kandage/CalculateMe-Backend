@@ -12,5 +12,4 @@ public class UserResponseDTO {
     private String userAddress;
     private String userEmail;
     private String userMobile;
-    private String password;
 }
