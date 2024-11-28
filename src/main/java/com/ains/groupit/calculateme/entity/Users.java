@@ -23,7 +23,7 @@ public class Users {
     @Column(unique = true)
     private String userMobile;
 
-    private String userFirstName;
-    private String userLastName;
+    private String userFullName;
     private String userAddress;
+    private String password;
 }

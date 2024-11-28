@@ -52,11 +52,11 @@ public class UserController {
     }
     @GetMapping("/details")
     public ResponseEntity<StandardResponse<Object>> getUserDetails(
-            @RequestParam String firstName,
+            @RequestParam String password,
             @RequestParam String email) {
 
         try {
-            StandardResponse<Object> userResponseDTO = userService.getUserDetails(firstName, email);
+            StandardResponse<Object> userResponseDTO = userService.getUserDetails(password, email);
             return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(),
