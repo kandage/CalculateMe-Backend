@@ -1,6 +1,7 @@
 package com.ains.groupit.calculateme.service.impl;
 
 import com.ains.groupit.calculateme.dto.request.UserRequestDTO;
+import com.ains.groupit.calculateme.dto.response.UserResponseDTO;
 import com.ains.groupit.calculateme.entity.Users;
 import com.ains.groupit.calculateme.repository.UsersRepository;
 import com.ains.groupit.calculateme.service.UserService;
@@ -9,6 +10,8 @@ import com.ains.groupit.calculateme.util.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -157,5 +160,22 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public StandardResponse<Object> getUserDetails(String firstName, String email) {
+        Optional<Users> userOptional = usersRepository.findByUserFirstNameAndUserEmail(firstName, email);
+
+        if (userOptional.isPresent()) {
+            Users user = userOptional.get();
+            UserResponseDTO userResponseDTO = userMapper.toResponseDTO(user);
+
+            return new StandardResponse<>(
+                    HttpStatus.OK.value(),
+                    "user details fetched successfully..!",
+                    userResponseDTO
+            );
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.ains.groupit.calculateme.service;
 
 import com.ains.groupit.calculateme.dto.request.UserRequestDTO;
+import com.ains.groupit.calculateme.dto.response.UserResponseDTO;
 import com.ains.groupit.calculateme.util.common.StandardResponse;
 
 public interface UserService {
@@ -10,5 +11,6 @@ public interface UserService {
 
     StandardResponse<Object> updateUserDetailsByMobile(String mobileNumber, UserRequestDTO userRequestDTO);
 
+    StandardResponse<Object> getUserDetails(String firstName, String email);
 }
 
