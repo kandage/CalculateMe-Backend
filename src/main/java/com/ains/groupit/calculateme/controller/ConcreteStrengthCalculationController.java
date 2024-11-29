@@ -30,7 +30,7 @@ public class ConcreteStrengthCalculationController {
                     "inputs=%s %s %s %s %s %s %s %s",
                     requestDTO.getAsh(), requestDTO.getWater(), requestDTO.getSuperplasticizer(),
                     requestDTO.getCoarseAggregate(), requestDTO.getFineAggregate(),
-                    requestDTO.getCement(), requestDTO.getAge(), requestDTO.getStrength()
+                    requestDTO.getCement(), requestDTO.getAge(), requestDTO.getSlag()
             );
 
             HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);

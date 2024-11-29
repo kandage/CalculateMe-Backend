@@ -1,7 +1,6 @@
 package com.ains.groupit.calculateme.controller;
 
 import com.ains.groupit.calculateme.dto.request.UserRequestDTO;
-import com.ains.groupit.calculateme.dto.response.UserResponseDTO;
 import com.ains.groupit.calculateme.service.UserService;
 import com.ains.groupit.calculateme.util.common.StandardResponse;
 import lombok.RequiredArgsConstructor;

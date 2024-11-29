@@ -15,5 +15,5 @@ public class ConcreteStrengthCalculationRequestDTO {
     private Double fineAggregate;
     private Double cement;
     private Double age;
-    private Double strength;
+    private Double slag;
 }
