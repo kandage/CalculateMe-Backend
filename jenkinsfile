@@ -1,0 +1,104 @@
+pipeline {
+    agent any
+
+   environment {
+       JAVA_HOME = '/usr/lib/jvm/java-11-openjdk-amd64'
+       MAVEN_HOME = '/usr/share/maven'
+       PATH = "${MAVEN_HOME}/bin:${JAVA_HOME}/bin:${env.PATH}"
+   }
+
+
+    tools {
+        maven 'Maven 3.6.3'
+        jdk 'OpenJDK 11'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'release/jenkins-development', url: 'https://github.com/kandage/CalculateMe-Backend'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build the project using Maven
+                script {
+                    sh 'mvn clean install -DskipTests=true'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run unit tests
+                script {
+                    sh 'mvn test'
+                }
+            }
+        }
+
+        stage('Package') {
+            steps {
+                // Package the Spring Boot application into a JAR
+                script {
+                    sh 'mvn package -DskipTests=true'
+                }
+            }
+        }
+
+        stage('Publish Artifact') {
+            steps {
+                // Publish the JAR artifact (can be to an artifact repository like Nexus or Artifactory)
+                // Here we can use a simple echo command for demonstration
+                archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/*.jar', fingerprint: true
+            }
+        }
+
+        stage('Deploy to Staging') {
+            steps {
+                script {
+                    sh '''
+                    scp target/your-app.jar ubuntu@<13.51.94.125>:/home/ubuntu/deploy/
+                    ssh ubuntu@<13.51.94.125> 'docker-compose -f /home/ubuntu/deploy/docker-compose.yml up -d'
+                    '''
+                }
+            }
+        }
+
+
+        stage('Deploy to Production') {
+            when {
+                branch 'main'  // Only deploy to production on the main branch
+            }
+            steps {
+                // Deploy the application to the production environment
+                script {
+                    // Example deploy via SSH (can be replaced with your preferred deployment method)
+                    sh '''
+                    scp target/your-app.jar ubuntu@<13.51.94.125>:/home/ubuntu/deploy/
+                    ssh ubuntu@<13.51.94.125> 'docker-compose -f /home/ubuntu/deploy/docker-compose.yml up -d'
+                    '''
+                }
+            }
+        }
+
+        stage('Clean Up') {
+            steps {
+                // Clean up any temporary files (optional)
+                cleanWs()
+            }
+        }
+    }
+
+    post {
+        success {
+            // Notify on success (example, could be sending a Slack message, email, etc.)
+            echo "Build and deploy successful!"
+        }
+        failure {
+            // Notify on failure (example, could be sending a Slack message, email, etc.)
+            echo "Build or deployment failed!"
+        }
+    }
+}
