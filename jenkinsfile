@@ -49,8 +49,6 @@ pipeline {
 
         stage('Publish Artifact') {
             steps {
-                // Publish the JAR artifact (can be to an artifact repository like Nexus or Artifactory)
-                // Here we can use a simple echo command for demonstration
                 archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/*.jar', fingerprint: true
             }
         }
@@ -59,7 +57,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    scp target/your-app.jar ubuntu@<13.51.94.125>:/home/ubuntu/deploy/
+                    scp target/appcalculateme.jar ubuntu@<13.51.94.125>:/home/ubuntu/deploy/
                     ssh ubuntu@<13.51.94.125> 'docker-compose -f /home/ubuntu/deploy/docker-compose.yml up -d'
                     '''
                 }
